@@ -58,8 +58,8 @@ class ViewController
 		return self::VALID_VIEW;
 	}
 	
-	// 3. Create the function to actually load the view.
-	public function displayView($view)
+	// 3. Create a function to actually load the view.
+	public function displayView($view, $action)
 	{
 		// 3a. Test if the requested view exists.  If not, direct the user to the 404 page.
 
@@ -80,15 +80,33 @@ class ViewController
 		}
 		
 		// If we got this far, we must have a valid view.
-		// 3b. Load the view.
+
+		// Before the views can be loaded, however, we really need to run all the code that 
+		// needs to be processed before the page is loaded.  For instance, if the user is 
+		// attempting to log in, we would need to run this through the UserController first.
+		// If they are trying to access restricted pages, such as their  user preferences, 
+		// we would need to run them through SecurityController first.
+
+		// 3b: Run any code that needs to be pre-executed based on the view/action.
+		$this->preExecute($view, $action);
+		
+		// 3c. Load the view.
 		$filename = "../views/$view.inc.php";
 		include $filename;
+	}
+	
+	// 4. Create a function to facilitate running all the code that needs to execute before
+	//    the view is loaded.
+	public function preExecute($view, $action)
+	{
+		// 4a. Figure out if anything needs to be pre-executed at all.
+		// 4b. Nothing needs to be pre-executed at the moment.
 	}
 }
 
 // Front Controller 2: Load the appropriate view.
 $viewController = new ViewController;
-$viewController->displayView($view);
+$viewController->displayView($view, $action);
 
 
 
