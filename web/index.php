@@ -133,12 +133,16 @@ class ViewController
 	public function preExecute()
 	{
 		// 4a. Figure out if anything needs to be pre-executed at all.
-		// 4b. If the view/action combo is home/index, load the first article.
+		// 4b. If the view/action combo is home/index, load the summaries of the first ten
+		//     articles.
 		if ($this->view == 'home' and $this->action == 'index')
 		{
 			$articleManager = new ArticleManager;
-			$article = $articleManager->fetchArticleByID(1);
+			
+			$summaries = $articleManager->fetchArticleSummaries(10);
 
+			/* FIXME: This is all temporary dead code.
+			$article = $articleManager->fetchArticleByID(1);
 			// 4c. If the article can't be found, set the view to the 404 page.
 			if ($article === ArticleManager::ERROR_ARTICLE_NOT_FOUND)
 			{
@@ -150,12 +154,16 @@ class ViewController
 				
 				return;
 			}
+			*/
 
 			// 4d. Tweak the results received.
-			$article->created = date('Y-m-d h:i:s', $article->created);
-			$article->changed = date('Y-m-d h:i:s', $article->changed);
+			foreach ($summaries as $summary)
+			{
+				$summary->created = date('Y-m-d h:i:s', $summary->created);
+				$summary->changed = date('Y-m-d h:i:s', $summary->changed);
+			}
 
-			$this->viewData = array('article' => $article);
+			$this->viewData = array('summaries' => $summaries);
 		}
 	}
 }
@@ -166,13 +174,14 @@ class ViewController
 */
 class ArticleManager
 {
-	const ERROR_ARTICLE_NOT_FOUND = 1;
+	const ERROR_INVALID_PARAM = 'invalid parameter';
+	const ERROR_ARTICLE_NOT_FOUND = 'article not found';
 
 	// 1. Fetch an article based on its ID.
 	public function fetchArticleByID($articleID)
 	{
 		// 1a. Run sanity checks on $articleID.
-		if (is_null($articleID) || !is_numeric($articleID)) { return self::ERROR_INVALID_ARTICLE_ID; }
+		if (is_null($articleID) || !is_numeric($articleID)) { throw new Exception("Parameter articleID is invalid", self::ERROR_INVALID_PARAM); }
 
 		// 1b. Load the DB object.
 		// NOTE: In true "Tell, Don't Ask" fashion, we don't have to worry at all about
@@ -180,7 +189,7 @@ class ArticleManager
 		$DB = MyDB::loadDB();
 
 		// 1c. Attempt to fetch the article from the database.
-		$DB->query('SELECT nid, type, title, uid, status, created, changed, body FROM node WHERE nid=?', array($articleID));
+		$DB->query('SELECT nid, title, created, changed, body FROM node WHERE nid=?', array($articleID));
 		$article = $DB->fetchObject();
 
 		if ($article === false)
@@ -190,14 +199,31 @@ class ArticleManager
 
 		return $article;
 	}
+	
+	// 2. Fetch the summaries of x articles, offset by y positions.
+	public function fetchArticleSummaries($articleLimit, $offset = 0)
+	{
+		// 2a. Run sanity checks on the parameters.
+		if (is_null($articleLimit) || !is_numeric($articleLimit)) { throw new Exception("Parameter articleLimit is invalid.", self::ERROR_INVALID_PARAM); }
+		if (is_null($offset) || !is_numeric($offset)) { throw new Exception("Parameter offset is invalid.", self::ERROR_INVALID_PARAM); }
+		
+		// 2b. Attempt to fetch the article summaries.
+		$DB = MyDB::loadDB();
+		$DB->query('SELECT nid, title, created, changed, teaser FROM node ' .
+		           'WHERE type="story" AND promote=1 ' .
+		           'ORDER BY nid ' . 
+		           "LIMIT $offset, $articleLimit");
+
+		$summaries = array();
+		while (($article = $DB->fetchObject()))
+		{
+			$summaries[] = $article;
+		}
+		
+		return $summaries;
+	}
 }
 
 // Front Controller 2: Load the appropriate view.
 $viewController = new ViewController;
 $viewController->displayView();
-
-
-
-
-
-
