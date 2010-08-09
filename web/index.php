@@ -124,6 +124,7 @@ class ViewController
 		}
 
 		// 3d. Load the view.
+		header('Content-Type: text/html; charset=utf-8');
 		include $this->viewFilename;
 	}
 	
@@ -135,10 +136,59 @@ class ViewController
 		// 4b. If the view/action combo is home/index, load the first article.
 		if ($this->view == 'home' and $this->action == 'index')
 		{
-			$this->viewData = array('title' => 'Hello, World!',
-			                        'body' => 'I\'m very glad this worked!');
-	
+			$articleManager = new ArticleManager;
+			$article = $articleManager->fetchArticleByID(1);
+
+			// 4c. If the article can't be found, set the view to the 404 page.
+			if ($article === ArticleManager::ERROR_ARTICLE_NOT_FOUND)
+			{
+				$this->view = '404';
+				$this->action = 'index';
+				
+				// FIXME: This is a crude hack to get the 404 page to work.
+				$this->isValidView($this->view);
+				
+				return;
+			}
+
+			// 4d. Tweak the results received.
+			$article->created = date('Y-m-d h:i:s', $article->created);
+			$article->changed = date('Y-m-d h:i:s', $article->changed);
+
+			$this->viewData = array('article' => $article);
 		}
+	}
+}
+
+/**
+* The ArticleManager is responsible for creating, reading, updating, and deleting blog 
+* articles, among other responsibilities.
+*/
+class ArticleManager
+{
+	const ERROR_ARTICLE_NOT_FOUND = 1;
+
+	// 1. Fetch an article based on its ID.
+	public function fetchArticleByID($articleID)
+	{
+		// 1a. Run sanity checks on $articleID.
+		if (is_null($articleID) || !is_numeric($articleID)) { return self::ERROR_INVALID_ARTICLE_ID; }
+
+		// 1b. Load the DB object.
+		// NOTE: In true "Tell, Don't Ask" fashion, we don't have to worry at all about
+		//       the intricacies of loading the database.
+		$DB = MyDB::loadDB();
+
+		// 1c. Attempt to fetch the article from the database.
+		$DB->query('SELECT nid, type, title, uid, status, created, changed, body FROM node WHERE nid=?', array($articleID));
+		$article = $DB->fetchObject();
+
+		if ($article === false)
+		{
+			return self::ERROR_ARTICLE_NOT_FOUND;
+		}
+
+		return $article;
 	}
 }
 
