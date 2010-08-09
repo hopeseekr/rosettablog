@@ -19,6 +19,8 @@
    it is performing.  Let's call our default view "home" and our default action "index".
 */
 
+// Change the active path to the root directory of the project.
+chdir('..');
 
 /**
 * The ViewController is responsible for marshalling the appropriate controllers and views
@@ -66,7 +68,7 @@ class ViewController
 		}
 
 		// 2b. Let's see if the view exists.
-		$filename = "../views/$view.inc.php";
+		$filename = "./views/$view.inc.php";
 		if (file_exists($filename) === false)
 		{
 			return self::ERROR_FILE_NOT_FOUND;
