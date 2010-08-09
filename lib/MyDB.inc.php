@@ -121,7 +121,7 @@ class MyDB
 
 		if (!isset($config->engine))
 		{
-			throw new MyDBException('database.config: No database engine specified.', MyDBException::NO_DB_ENGINE);
+			$config->engine = 'PDO';
 		}
 
 		$useReplication = isset($config->useReplication) ? $config->useReplication : false;
@@ -137,7 +137,19 @@ class MyDB
 		{
 			if ($config->engine == 'PDO')
 			{
-				$dbConfig = MyDBConfigStruct::fromStd($config);
+				if ($config instanceof stdClass)
+				{
+					$dbConfig = MyDBConfigStruct::fromStd($config);
+				}
+				else if ($config instanceof MyDBConfigStruct)
+				{
+					$dbConfig = $config;
+				}
+				else
+				{
+					throw new MyDBException('Bad config structure.', self::BAD_CONFIG_FILE);
+				}
+
 				return new MyPDO($dbConfig);
 			}
 		}
