@@ -155,16 +155,36 @@ class ViewController
 				return;
 			}
 			*/
-
 			// 4d. Tweak the results received.
 			foreach ($summaries as $summary)
 			{
-				$summary->created = date('Y-m-d h:i:s', $summary->created);
-				$summary->changed = date('Y-m-d h:i:s', $summary->changed);
+				$summary->reformat();
 			}
 
 			$this->viewData = array('summaries' => $summaries);
 		}
+	}
+}
+
+/**
+* The Article class is responsible for holding the data of articles and making
+* sure its properly formatted and validated, among other things.
+* It is a Struct datatype, and that is why its properties are public.
+*/
+class Article
+{
+	public $id;
+	public $title;
+	public $created;
+	public $lastModified;
+	public $teaser;
+	public $body;
+	
+	// 1. Reformat the object.
+	public function reformat()
+	{
+		$this->created = date('Y-m-d h:i:s', $this->created);
+		$this->lastModified = date('Y-m-d h:i:s', $this->lastModified);
 	}
 }
 
@@ -189,8 +209,8 @@ class ArticleManager
 		$DB = MyDB::loadDB();
 
 		// 1c. Attempt to fetch the article from the database.
-		$DB->query('SELECT nid, title, created, changed, body FROM node WHERE nid=?', array($articleID));
-		$article = $DB->fetchObject();
+		$DB->query('SELECT nid, title, created, changed AS lastModified, body FROM node WHERE nid=?', array($articleID));
+		$article = $DB->fetchObject('Article');
 
 		if ($article === false)
 		{
@@ -209,13 +229,13 @@ class ArticleManager
 		
 		// 2b. Attempt to fetch the article summaries.
 		$DB = MyDB::loadDB();
-		$DB->query('SELECT nid, title, created, changed, teaser FROM node ' .
+		$DB->query('SELECT nid, title, created, changed AS lastModified, teaser FROM node ' .
 		           'WHERE type="story" AND promote=1 ' .
 		           'ORDER BY nid ' . 
 		           "LIMIT $offset, $articleLimit");
 
 		$summaries = array();
-		while (($article = $DB->fetchObject()))
+		while (($article = $DB->fetchObject('Article')))
 		{
 			$summaries[] = $article;
 		}
