@@ -22,6 +22,9 @@
 // Change the active path to the root directory of the project.
 chdir('..');
 
+// Load the database library.
+require './lib/MyDB.inc.php';
+
 /**
 * The ViewController is responsible for marshalling the appropriate controllers and views
 * for any given view/action combo.
@@ -38,6 +41,8 @@ class ViewController
 	private $view;
 	private $action;
 	private $viewFilename;
+
+	private $viewData;
 	
 	// 2. Initialize the object.
 	public function __construct()
@@ -112,7 +117,13 @@ class ViewController
 		// 3b: Run any code that needs to be pre-executed based on the view/action.
 		$this->preExecute();
 		
-		// 3c. Load the view.
+		// 3c. Explode out all of the data from self::preExecute() into the view's scope.
+		if (!is_null($this->viewData) && is_array($this->viewData))
+		{
+			extract($this->viewData);
+		}
+
+		// 3d. Load the view.
 		include $this->viewFilename;
 	}
 	
@@ -121,7 +132,13 @@ class ViewController
 	public function preExecute()
 	{
 		// 4a. Figure out if anything needs to be pre-executed at all.
-		// 4b. Nothing needs to be pre-executed at the moment.
+		// 4b. If the view/action combo is home/index, load the first article.
+		if ($this->view == 'home' and $this->action == 'index')
+		{
+			$this->viewData = array('title' => 'Hello, World!',
+			                        'body' => 'I\'m very glad this worked!');
+	
+		}
 	}
 }
 
