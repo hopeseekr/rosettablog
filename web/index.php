@@ -26,16 +26,19 @@
 $view = isset($_GET['view']) ? filter_input(INPUT_GET, 'view', FILTER_SANITIZE_STRING) : 'home';
 $action = isset($_GET['action']) ? filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING) : 'index';
 
-// ViewController: 1. Move isValidView() into the ViewController.
+/**
+* The ViewController is responsible for marshalling the appropriate controllers and views
+* for any given view/action combo.
+*/
 class ViewController
 {
-	// 1a. Let's rewrite the constants as class constants.
+	// 1. Setup constants for class-specific return statutes. 
 	// ProTip: Use constants to define things like status codes to make your source code far easier
 	//         to understand.  Per the PHP standard, return true on success.
 	const VALID_VIEW = true;
 	const ERROR_INVALID_FILE_NAME = 1;
 	const ERROR_FILE_NOT_FOUND = 2;
-
+	
 	// 2. Let's create a function to determine whether a view exists or not.
 	private function isValidView($view)
 	{
