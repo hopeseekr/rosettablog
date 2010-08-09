@@ -86,6 +86,10 @@ class ViewController
 	}
 }
 
+// Front Controller 2: Load the appropriate view.
+$viewController = new ViewController;
+$viewController->displayView($view);
+
 
 
 
