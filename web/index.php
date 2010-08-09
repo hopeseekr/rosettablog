@@ -19,12 +19,6 @@
    it is performing.  Let's call our default view "home" and our default action "index".
 */
 
-// Front Controller: 1. Find out what view and action we will display.
-
-// The code below means, "If the URL parameter view= is set, grab its sanitized value via the input 
-// filter, or use the default value 'home'."
-$view = isset($_GET['view']) ? filter_input(INPUT_GET, 'view', FILTER_SANITIZE_STRING) : 'home';
-$action = isset($_GET['action']) ? filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING) : 'index';
 
 /**
 * The ViewController is responsible for marshalling the appropriate controllers and views
@@ -39,9 +33,30 @@ class ViewController
 	const ERROR_INVALID_FILE_NAME = 1;
 	const ERROR_FILE_NOT_FOUND = 2;
 	
-	// 2. Let's create a function to determine whether a view exists or not.
-	private function isValidView($view)
+	private $view;
+	private $action;
+	private $viewFilename;
+	
+	// 2. Initialize the object.
+	public function __construct()
 	{
+		// 2a. Set the view/action combo.
+		$this->fetchViewActionCombo();
+	}
+	
+	// 3. Create a function to fetch the view/action combo.
+	private function fetchViewActionCombo()
+	{
+		// The code below means, "If the URL parameter view= is set, grab its sanitized value via the input 
+		// filter, or use the default value 'home'."
+		$this->view = isset($_GET['view']) ? filter_input(INPUT_GET, 'view', FILTER_SANITIZE_STRING) : 'home';
+		$this->action = isset($_GET['action']) ? filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING) : 'index';
+	}
+	
+	// 2. Let's create a function to determine whether a view exists or not.
+	private function isValidView()
+	{
+		$view = $this->view;
 		// 2a. Make sure the view file does not contain any inappropriate characters.
 		//    This is *vitally* important, as otherwise hackers would be able to arbitrarily
 		//    view any file on the system that your PHP process has access to, which would be bad.
@@ -58,11 +73,13 @@ class ViewController
 		}
 		
 		// 2c. If it got this far, it must be a valid view!
+		$this->viewFilename = $filename;
+
 		return self::VALID_VIEW;
 	}
 	
 	// 3. Create a function to actually load the view.
-	public function displayView($view, $action)
+	public function displayView()
 	{
 		// 3a. Test if the requested view exists.  If not, direct the user to the 404 page.
 
@@ -72,7 +89,7 @@ class ViewController
 
 		// Pro Tip: If you use != instead of !== here, then every view will return true, as
 		//          every isValidView() status message is greater than 0.
-		if ($this->isValidView($view) !== self::VALID_VIEW)
+		if ($this->isValidView($this->view) !== self::VALID_VIEW)
 		{
 			$url = 'http://' . $_SERVER['HTTP_HOST'] . '/rosettablog/index.php?view=404';
 			header('Location: ' . $url);
@@ -91,16 +108,15 @@ class ViewController
 		// we would need to run them through SecurityController first.
 
 		// 3b: Run any code that needs to be pre-executed based on the view/action.
-		$this->preExecute($view, $action);
+		$this->preExecute();
 		
 		// 3c. Load the view.
-		$filename = "../views/$view.inc.php";
-		include $filename;
+		include $this->viewFilename;
 	}
 	
 	// 4. Create a function to facilitate running all the code that needs to execute before
 	//    the view is loaded.
-	public function preExecute($view, $action)
+	public function preExecute()
 	{
 		// 4a. Figure out if anything needs to be pre-executed at all.
 		// 4b. Nothing needs to be pre-executed at the moment.
@@ -109,7 +125,7 @@ class ViewController
 
 // Front Controller 2: Load the appropriate view.
 $viewController = new ViewController;
-$viewController->displayView($view, $action);
+$viewController->displayView();
 
 
 
