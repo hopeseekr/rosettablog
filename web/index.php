@@ -133,17 +133,31 @@ class ViewController
 	public function preExecute()
 	{
 		// 4a. Figure out if anything needs to be pre-executed at all.
-		// 4b. If the view/action combo is home/index, load the summaries of the first ten
+		// 4b. If the view/action combo is home/index, load the summaries of the first five
 		//     articles.
 		if ($this->view == 'home' and $this->action == 'index')
 		{
 			$articleManager = new ArticleManager;
-			
-			$summaries = $articleManager->fetchArticleSummaries(10);
+			$summaries = $articleManager->fetchArticleSummaries(5);
 
-			/* FIXME: This is all temporary dead code.
-			$article = $articleManager->fetchArticleByID(1);
-			// 4c. If the article can't be found, set the view to the 404 page.
+			// 4c. Tweak the results received.
+			foreach ($summaries as $summary)
+			{
+				$summary->reformat();
+			}
+
+			$this->viewData = array('summaries' => $summaries);
+		}
+		else if ($this->view == 'article' and $this->action == 'index')
+		{
+			// 4d. Get the article ID.
+			$articleID = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+			
+			// 4e. Get the article.
+			$articleManager = new ArticleManager;
+			$article = $articleManager->fetchArticleByID($articleID);
+			
+			// 4f. If the article can't be found, set the view to the 404 page.
 			if ($article === ArticleManager::ERROR_ARTICLE_NOT_FOUND)
 			{
 				$this->view = '404';
@@ -154,16 +168,24 @@ class ViewController
 				
 				return;
 			}
-			*/
-			// 4d. Tweak the results received.
-			foreach ($summaries as $summary)
-			{
-				$summary->reformat();
-			}
-
-			$this->viewData = array('summaries' => $summaries);
+			
+			$article->reformat();
+			$this->viewData = array('article' => $article);
 		}
 	}
+}
+
+/**
+ * Simply converts new lines to XHTML <p>.
+ * @param string $text
+ * @return string
+ */
+
+function nl2p($text)
+{
+        $new_text = '<p>' . str_replace("\n\n", '</p><p>', $text) . '</p>';
+
+        return str_replace("\n", "<br/>\n", $new_text);
 }
 
 /**
@@ -197,7 +219,12 @@ class ArticleManager
 	const ERROR_INVALID_PARAM = 'invalid parameter';
 	const ERROR_ARTICLE_NOT_FOUND = 'article not found';
 
-	// 1. Fetch an article based on its ID.
+	/**
+	*  1. Fetch an article based on its ID.
+	* 
+	* @param int $articleID
+	* @return Article
+	*/
 	public function fetchArticleByID($articleID)
 	{
 		// 1a. Run sanity checks on $articleID.
@@ -209,7 +236,7 @@ class ArticleManager
 		$DB = MyDB::loadDB();
 
 		// 1c. Attempt to fetch the article from the database.
-		$DB->query('SELECT nid, title, created, changed AS lastModified, body FROM node WHERE nid=?', array($articleID));
+		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, body FROM node WHERE nid=?', array($articleID));
 		$article = $DB->fetchObject('Article');
 
 		if ($article === false)
@@ -229,7 +256,7 @@ class ArticleManager
 		
 		// 2b. Attempt to fetch the article summaries.
 		$DB = MyDB::loadDB();
-		$DB->query('SELECT nid, title, created, changed AS lastModified, teaser FROM node ' .
+		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, teaser FROM node ' .
 		           'WHERE type="story" AND promote=1 ' .
 		           'ORDER BY nid ' . 
 		           "LIMIT $offset, $articleLimit");

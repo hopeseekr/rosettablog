@@ -13,12 +13,12 @@
 	{
 ?>
 			<li class="article_box">
-				<h2><?php echo $summary->title; ?></h2>
+				<h2><a href="index.php?view=article&amp;id=<?php echo $summary->id; ?>"><?php echo $summary->title; ?></a></h2>
 				<ul>
 					<li>Created: <?php echo $summary->created; ?></li>
-					<li>Last modified: <?php echo $summary->changed; ?></li>
+					<li>Last modified: <?php echo $summary->lastModified; ?></li>
 				</ul>
-				<p class="artible_body"><?php echo $summary->body; ?></p>
+				<p class="artible_body"><?php echo nl2p($summary->teaser); ?></p>
 			</li>
 <?php
 	}	
