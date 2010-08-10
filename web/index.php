@@ -25,6 +25,32 @@ chdir('..');
 // Load the database library.
 require './lib/MyDB.inc.php';
 
+// 2. Setup the __autoload magic function to handle loading all of our
+//    required files.
+function __autoload($name)
+{
+        if (strpos($name, 'Controller') !== false)
+        {
+                require './controllers/' . $name . '.inc.php';
+        }
+        else if (strpos($name, 'Manager') !== false)
+        {
+                require './managers/' . $name . '.inc.php';
+        }
+        else
+        {
+                // Let's see if it's a model.
+                $filename = './models/' . $name . '.inc.php';
+                if (file_exists($filename))
+                {
+                        require $filename;
+                }
+        }
+
+        // If all else fails...
+        return false;
+}
+
 /**
 * The ViewController is responsible for marshalling the appropriate controllers and views
 * for any given view/action combo.
