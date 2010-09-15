@@ -59,6 +59,10 @@ function __autoload($name)
 	{
 		require './managers/' . $name . '.inc.php';
 	}
+    else if (file_exists('misc/' . $name . '.inc.php'))
+    {
+        require 'misc/' . $name . '.inc.php';
+    }
 	else
 	{
 		// Let's see if it's a model.
