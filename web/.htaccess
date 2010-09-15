@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteBase /rosettablog/dev/web/
+# Pretty URLs
+RewriteRule ^node/([^/]+) index.php?view=article&id=$1 [QSA]

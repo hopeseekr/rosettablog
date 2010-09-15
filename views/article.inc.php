@@ -25,7 +25,7 @@
 	<body>
 		<h1>Incendiary.ws</h1>
 		<div class="article_box">
-			<h2><a href="index.php?view=article&amp;id=<?php echo $article->id; ?>"><?php echo $article->title; ?></a></h2>
+			<h2><a href="<?php echo url_a("index.php?view=article&id={$article->id}"); ?>"><?php echo $article->title; ?></a></h2>
 			<ul>
 				<li>Created: <?php echo $article->created; ?></li>
 				<li>Last modified: <?php echo $article->changed; ?></li>

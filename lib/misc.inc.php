@@ -28,3 +28,32 @@ function nl2p($text)
         return str_replace("\n", "<br/>\n", $new_text);
 }
 
+// FIXME: This needs to be OOPized.
+function url_a($url_in, $noEscaping = false)
+{
+    $config = SimpleConfig::getInstance();
+    $parts = parse_url($url_in);
+
+    if (isset($parts['host']) || $config['pretty_urls'] === false)
+    {
+        return !$noEscaping ? htmlentities($url_in) : $url_in;
+    }
+
+    // At this point, we can safely assume that pretty_urls is enabled.
+    $args = array();
+    parse_str($parts['query'], $args);
+
+    if (isset($args['view']) && $args['view'] == 'article')
+    {
+        $url = 'node/' . $args['id'];
+        unset($args['view']); unset($args['id']);
+
+        if (!empty($args))
+        {
+            // Append the rest of the array:
+            $url .= '?' . http_build_query($args);
+        }
+    }
+
+    return $url;
+}
