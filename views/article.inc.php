@@ -14,9 +14,12 @@
 *
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
+
+$rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/') + 1);
 ?>
 <html>
 	<head>
+        <base href="<?php echo $rootDir; ?>"/>
 		<title><?php echo $article->title; ?> | incendiary.ws</title>
 		<style type="text/css" rel="stylesheet" media="all">
 .article_box { border: 1px solid #aaa; width: 40em; padding: 15px 30px 15px 30px; margin: 10px 0 10px 0; }
@@ -24,6 +27,7 @@
 	</head>
 	<body>
 		<h1>Incendiary.ws</h1>
+        <div class="breadcrumbs"><a href="">Home</a></div>
 		<div class="article_box">
 			<h2><a href="<?php echo url_a("index.php?view=article&id={$article->id}"); ?>"><?php echo $article->title; ?></a></h2>
 			<ul>
