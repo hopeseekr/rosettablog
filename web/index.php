@@ -43,7 +43,11 @@ require './lib/MyDB.inc.php';
 // 1c. Load helper functions.
 require './lib/misc.inc.php';
 
-// 2. Setup the __autoload magic function to handle loading all of our
+// 2. Start up the SimpleConfig library.
+require './lib/SimpleConfig.php';
+SimpleConfig::setConfig('./config.php');
+
+// 3. Setup the __autoload magic function to handle loading all of our
 //    required files.
 function __autoload($name)
 {
@@ -69,7 +73,7 @@ function __autoload($name)
 	return false;
 }
 
-// 3. Load the appropriate view.
+// 4. Load the appropriate view.
 $viewController = new ViewController;
 $viewController->displayView();
 
