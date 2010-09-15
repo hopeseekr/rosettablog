@@ -63,7 +63,7 @@ class ArticleManager
         $DB = MyDB::loadDB();
         $DB->query('SELECT nid AS id, title, created, changed AS lastModified, teaser FROM node ' .
                    'WHERE type="story" AND promote=1 ' .
-                   'ORDER BY nid ' . 
+                   'ORDER BY nid DESC ' . 
                    "LIMIT $offset, $articleLimit");
  
         $summaries = array();
