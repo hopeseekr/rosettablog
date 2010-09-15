@@ -32,7 +32,7 @@ $rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '
 			<h2><a href="<?php echo url_a("index.php?view=article&id={$article->id}"); ?>"><?php echo $article->title; ?></a></h2>
 			<ul>
 				<li>Created: <?php echo $article->created; ?></li>
-				<li>Last modified: <?php echo $article->changed; ?></li>
+				<li>Last modified: <?php echo $article->lastModified; ?></li>
 			</ul>
 			<p class="artible_body"><?php echo nl2p($article->body); ?></p>
 		</div>
