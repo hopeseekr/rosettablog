@@ -35,6 +35,8 @@ class MyDBConfigStruct
 	public $username;
 	public $password;
 	public $database;
+	public $engine = 'PDO';
+	public $useReplication = false;
 
 	/**
 	 * Converts a stdClass object to MyDBConfigStruct object
@@ -96,47 +98,43 @@ class MyDB
 
 		// Never store passes in plaintext!!
 		// Let's see if we're storing the pass in the server.conf...
-		if (is_null($config) && isset($_SERVER['SQL_USER']))
+		if (is_null($config))
 		{
-			$config = new MyDBConfigStruct;
-			$config->hostname = isset($_SERVER['SQL_HOST']) ? $_SERVER['SQL_HOST'] : 'localhost';
-			$config->username = $_SERVER['SQL_USER'];
-			$config->password = $_SERVER['SQL_PASS'];
-			$config->database = $_SERVER['SQL_DB'];
-		}
-		else
-		{
-			if (!file_exists('database.config'))
+			if (isset($_SERVER['SQL_USER']))
 			{
-				throw new MyDBException('Couldn\'t find database.config.', MyDBException::CANT_LOAD_CONFIG_FILE);
+				$config = new MyDBConfigStruct;
+				$config->hostname = isset($_SERVER['SQL_HOST']) ? $_SERVER['SQL_HOST'] : 'localhost';
+				$config->username = $_SERVER['SQL_USER'];
+				$config->password = $_SERVER['SQL_PASS'];
+				$config->database = $_SERVER['SQL_DB'];
 			}
-
-			$data = file_get_contents('database.config');
-			
-			if ($data === false)
+			else
 			{
-				throw new MyDBException('Couldn\'t load database.config.', MyDBException::CANT_LOAD_CONFIG_FILE);
-			}
+				if (!file_exists('database.config'))
+				{
+					throw new MyDBException('Couldn\'t find database.config.', MyDBException::CANT_LOAD_CONFIG_FILE);
+				}
 
-			$data = base64_decode($data);
-			$config = json_decode($data);
+				$data = file_get_contents('database.config');
 
-			if ($config === false || is_null($config))
-			{
-				throw new MyDBException('Couldn\'t successfully parse database.config.', MyDBException::BAD_CONFIG_FILE);
+				if ($data === false)
+				{
+					throw new MyDBException('Couldn\'t load database.config.', MyDBException::CANT_LOAD_CONFIG_FILE);
+				}
+
+				$data = base64_decode($data);
+				$config = json_decode($data);
+
+				if ($config === false || is_null($config))
+				{
+					throw new MyDBException('Couldn\'t successfully parse database.config.', MyDBException::BAD_CONFIG_FILE);
+				}
 			}
 		}
 
 		$_config = $config;
 
-		if (!isset($config->engine))
-		{
-			$config->engine = 'PDO';
-		}
-
-		$useReplication = isset($config->useReplication) ? $config->useReplication : false;
-
-		if ($useReplication)
+		if ($config->useReplication)
 		{
 			if ($config->engine == 'PDO')
 			{
@@ -272,7 +270,7 @@ c	 */
 	public function query($sql, array $params = null)
 	{
 		$stmt = $this->pdo->prepare($sql);
-		
+
 		if (!$stmt->execute($params))
 		{
 			// Do NOT show SQL errors (security risk)
