@@ -23,9 +23,11 @@
  */
 function nl2p($text)
 {
-        $new_text = '<p>' . str_replace("\n\n", '</p><p>', $text) . '</p>';
- 
-        return str_replace("\n", "<br/>\n", $new_text);
+    $new_text = '<p>' . preg_replace('/\r?\n\r?\n/', "</p><p>", $text) . '</p>';
+    $new_text = str_replace("\n", "<br/>\n", $new_text);
+    $new_text = str_replace('</p><p>', "</p>\n\n<p>", $new_text);
+
+    return $new_text;
 }
 
 function url_a($url_in, $noEscaping = false)
