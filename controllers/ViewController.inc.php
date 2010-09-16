@@ -74,6 +74,13 @@ class ViewController
  
         return self::VALID_VIEW;
     }
+    
+    public function display404()
+    {
+        $this->view = '404';
+        $this->action = 'index';
+        $this->displayView();
+    }
  
     // 3. Create a function to actually load the view.
     public function displayView()
@@ -88,9 +95,7 @@ class ViewController
         //          every isValidView() status message is greater than 0.
         if ($this->isValidView($this->view) !== self::VALID_VIEW)
         {
-            $this->view = '404';
-            $this->action = 'index';
-            $this->displayView();
+            $this->display404();
             return;
         }
  
@@ -148,12 +153,7 @@ class ViewController
             // 4f. If the article can't be found, set the view to the 404 page.
             if ($article === ArticleManager::ERROR_ARTICLE_NOT_FOUND)
             {
-                $this->view = '404';
-                $this->action = 'index';
- 
-                // FIXME: This is a crude hack to get the 404 page to work.
-                $this->isValidView($this->view);
- 
+                $this->display404();
                 return;
             }
  
