@@ -78,7 +78,7 @@ class ViewController
     // 3. Create a function to actually load the view.
     public function displayView()
     {
-        // 3a. Test if the requested view exists.  If not, direct the user to the 404 page.
+        // 3a. Test if the requested view exists.  If not, show the 404 page.
  
         // Pro Tip: Try not to "over develop" by trying to code every feature you think the
         //          client *might* want in the future, and just do the most pragmatic first.
@@ -88,12 +88,10 @@ class ViewController
         //          every isValidView() status message is greater than 0.
         if ($this->isValidView($this->view) !== self::VALID_VIEW)
         {
-            $url = 'http://' . $_SERVER['HTTP_HOST'] . '/rosettablog/index.php?view=404';
-            header('Location: ' . $url);
- 
-            // Pro Tip: Always put an exit after an HTTP redirect, or your PHP app will
-            //          chugging along, with sometimes disasterous results.
-            exit;
+            $this->view = '404';
+            $this->action = 'index';
+            $this->displayView();
+            return;
         }
  
         // If we got this far, we must have a valid view.
