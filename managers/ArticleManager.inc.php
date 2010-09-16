@@ -15,15 +15,19 @@
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
 
+class ArticleManagerException extends Exception
+{
+    const INVALID_PARAM = 1;
+    const ARTICLE_NOT_FOUND = 2;
+}
+
+
 /**
 * The ArticleManager is responsible for creating, reading, updating, and deleting blog 
 * articles, among other responsibilities.
 */
 class ArticleManager
-{
-    const ERROR_INVALID_PARAM = 'invalid parameter';
-    const ERROR_ARTICLE_NOT_FOUND = 'article not found';
- 
+{ 
     /**
     *  1. Fetch an article based on its ID.
     * 
@@ -33,7 +37,7 @@ class ArticleManager
     public function fetchArticleByID($articleID)
     {
         // 1a. Run sanity checks on $articleID.
-        if (is_null($articleID) || !is_numeric($articleID)) { throw new Exception("Parameter articleID is invalid", self::ERROR_INVALID_PARAM); }
+        if (is_null($articleID) || !is_numeric($articleID)) { throw new Exception("Parameter articleID is invalid", ArticleManagerException::INVALID_PARAM); }
  
         // 1b. Load the DB object.
         // NOTE: In true "Tell, Don't Ask" fashion, we don't have to worry at all about
@@ -46,7 +50,7 @@ class ArticleManager
  
         if ($article === false)
         {
-            return self::ERROR_ARTICLE_NOT_FOUND;
+            throw new ArticleManagerException("Could not find the article.", ArticleManagerException::ARTICLE_NOT_FOUND);
         }
  
         return $article;
@@ -56,8 +60,8 @@ class ArticleManager
     public function fetchArticleSummaries($articleLimit, $offset = 0)
     {
         // 2a. Run sanity checks on the parameters.
-        if (is_null($articleLimit) || !is_numeric($articleLimit)) { throw new Exception("Parameter articleLimit is invalid.", self::ERROR_INVALID_PARAM); }
-        if (is_null($offset) || !is_numeric($offset)) { throw new Exception("Parameter offset is invalid.", self::ERROR_INVALID_PARAM); }
+        if (is_null($articleLimit) || !is_numeric($articleLimit)) { throw new ArticleManagerException("Parameter articleLimit is invalid.", ArticleManagerException::INVALID_PARAM); }
+        if (is_null($offset) || !is_numeric($offset)) { throw new ArticleManagerException("Parameter offset is invalid.", ArticleManagerException::INVALID_PARAM); }
  
         // 2b. Attempt to fetch the article summaries.
         $DB = MyDB::loadDB();

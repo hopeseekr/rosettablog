@@ -77,9 +77,11 @@ class ViewController
     
     public function display404()
     {
+		header('HTTP/1.1 404 Not Found');
         $this->view = '404';
         $this->action = 'index';
         $this->displayView();
+		exit;
     }
  
     // 3. Create a function to actually load the view.
@@ -132,33 +134,41 @@ class ViewController
         {
             $articleManager = new ArticleManager;
             $summaries = $articleManager->fetchArticleSummaries(5);
- 
+
             // 4c. Tweak the results received.
             foreach ($summaries as $summary)
             {
                 $summary->reformat();
             }
- 
+
             $this->viewData = array('summaries' => $summaries);
         }
         else if ($this->view == 'article' and $this->action == 'index')
         {
             // 4d. Get the article ID.
             $articleID = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
- 
+
             // 4e. Get the article.
             $articleManager = new ArticleManager;
-            $article = $articleManager->fetchArticleByID($articleID);
- 
-            // 4f. If the article can't be found, set the view to the 404 page.
-            if ($article === ArticleManager::ERROR_ARTICLE_NOT_FOUND)
+
+            try
             {
-                $this->display404();
-                return;
+                $article = $articleManager->fetchArticleByID($articleID);
+                $article->reformat();
+                $this->viewData = array('article' => $article);
             }
- 
-            $article->reformat();
-            $this->viewData = array('article' => $article);
+            catch (ArticleManagerException $e)
+            {            
+                // 4f. If the article can't be found, set the view to the 404 page.
+                if ($e->getCode() === ArticleManagerException::ARTICLE_NOT_FOUND)
+                {
+                    $this->display404();
+                }
+                else
+                {
+                	throw new $e;
+				}
+            } 
         }
     }
 }
