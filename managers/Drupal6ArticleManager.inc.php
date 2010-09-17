@@ -15,7 +15,7 @@
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
 
-class Drupal5ArticleManager implements ArticleManagerI
+class Drupal6ArticleManager implements ArticleManagerI
 {
 	/**
 	*  1. Fetch an article based on its ID.
@@ -34,7 +34,14 @@ class Drupal5ArticleManager implements ArticleManagerI
 		$DB = MyDB::loadDB();
 
 		// 1c. Attempt to fetch the article from the database.
-		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, body FROM node WHERE nid=?', array($articleID));
+		$sql = <<<SQL
+SELECT n.nid AS id, n.type, n.vid, n.uid, nr.title, nr.body, n.status, n.created, nr.timestamp AS changed, 
+       n.comment, n.promote, n.moderate, n.sticky, nr.format, nr.log 
+FROM node n 
+JOIN node_revisions nr USING(nid, vid) 
+WHERE nid=?
+SQL;
+		$DB->query($sql, array($articleID));
 		$article = $DB->fetchObject('Article');
 
 		if ($article === false)
@@ -54,10 +61,17 @@ class Drupal5ArticleManager implements ArticleManagerI
 
 		// 2b. Attempt to fetch the article summaries.
 		$DB = MyDB::loadDB();
-		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, teaser FROM node ' .
-		           'WHERE type="story" AND promote=1 ' .
-		           'ORDER BY nid DESC ' . 
-		           "LIMIT $offset, $articleLimit");
+		$sql = <<<SQL
+SELECT n.nid AS id, n.type, n.vid, n.uid, nr.title, nr.teaser, n.status, n.created, nr.timestamp AS changed, 
+       n.comment, n.promote, n.moderate, n.sticky, nr.format, nr.log 
+FROM node n 
+JOIN node_revisions nr USING(nid, vid) 
+WHERE n.promote=true
+ORDER BY nid DESC
+LIMIT $offset, $articleLimit
+SQL;
+
+		$DB->query($sql);
 
 		$summaries = array();
 		while (($article = $DB->fetchObject('Article')))
