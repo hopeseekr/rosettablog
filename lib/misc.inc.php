@@ -1,7 +1,7 @@
 <?php
 /**
 * Rosetta Blog
-*   Copyright © 2010 Theodore R. Smith <theodore@phpexperts.pro>
+*   Copyright Â© 2010 Theodore R. Smith <theodore@phpexperts.pro>
 * 
 * The following code is licensed under a modified BSD License.
 * All of the terms and conditions of the BSD License apply with one
