@@ -60,7 +60,7 @@ class ArticleManager implements ArticleManagerI
 	// 2. Fetch the summaries of x articles, offset by y positions.
 	public function fetchArticleByID($articleID)
 	{
-		return $this->articleManager->fetchArticleByName($articleID);
+		return $this->articleManager->fetchArticleByID($articleID);
 	}
 
 	public function fetchArticleSummaries($articleLimit, $offset = 0)
