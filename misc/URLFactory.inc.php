@@ -83,5 +83,3 @@ class DrupalURL
     }
 }
 
-// FIXME: This needs to be OOPized.
-

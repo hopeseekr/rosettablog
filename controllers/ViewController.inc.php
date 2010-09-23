@@ -27,20 +27,26 @@ class ViewController
     const VALID_VIEW = true;
     const ERROR_INVALID_FILE_NAME = 1;
     const ERROR_FILE_NOT_FOUND = 2;
- 
-    private $view;
+
+	/** @var ThemeManagerI **/
+	private $themeEngine;
+
+	private $view;
     private $action;
     private $viewFilename;
- 
+
     private $viewData;
- 
+
     // 2. Initialize the object.
-    public function __construct()
+    public function __construct($themeEngine)
     {
-        // 2a. Set the view/action combo.
+		// 2a. Set the theme engine.
+		$this->themeEngine = $themeEngine;
+
+		// 2b. Set the view/action combo.
         $this->fetchViewActionCombo();
     }
- 
+
     // 3. Create a function to fetch the view/action combo.
     private function fetchViewActionCombo()
     {
@@ -49,7 +55,7 @@ class ViewController
         $this->view = isset($_GET['view']) ? filter_input(INPUT_GET, 'view', FILTER_SANITIZE_STRING) : 'home';
         $this->action = isset($_GET['action']) ? filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING) : 'index';
     }
- 
+
     // 2. Let's create a function to determine whether a view exists or not.
     private function isValidView()
     {
@@ -61,20 +67,20 @@ class ViewController
         {
             return self::ERROR_INVALID_FILE_NAME;
         }
- 
+
         // 2b. Let's see if the view exists.
         $filename = "./views/$view.inc.php";
         if (file_exists($filename) === false)
         {
             return self::ERROR_FILE_NOT_FOUND;
         }
- 
+
         // 2c. If it got this far, it must be a valid view!
         $this->viewFilename = $filename;
- 
+
         return self::VALID_VIEW;
     }
-    
+
     public function display404()
     {
 		header('HTTP/1.1 404 Not Found');
@@ -83,16 +89,16 @@ class ViewController
         $this->displayView();
 		exit;
     }
- 
+
     // 3. Create a function to actually load the view.
     public function displayView()
     {
         // 3a. Test if the requested view exists.  If not, show the 404 page.
- 
+
         // Pro Tip: Try not to "over develop" by trying to code every feature you think the
         //          client *might* want in the future, and just do the most pragmatic first.
         //          It will be easier to add on later and you won't waste any time.
- 
+
         // Pro Tip: If you use != instead of !== here, then every view will return true, as
         //          every isValidView() status message is greater than 0.
         if ($this->isValidView($this->view) !== self::VALID_VIEW)
@@ -100,34 +106,36 @@ class ViewController
             $this->display404();
             return;
         }
- 
+
         // If we got this far, we must have a valid view.
- 
+
         // Before the views can be loaded, however, we really need to run all the code that 
         // needs to be processed before the page is loaded.  For instance, if the user is 
         // attempting to log in, we would need to run this through the UserController first.
         // If they are trying to access restricted pages, such as their  user preferences, 
         // we would need to run them through SecurityController first.
- 
+
         // 3b: Run any code that needs to be pre-executed based on the view/action.
         $this->preExecute();
- 
+
         // 3c. Explode out all of the data from self::preExecute() into the view's scope.
         if (!is_null($this->viewData) && is_array($this->viewData))
         {
             extract($this->viewData);
         }
- 
+
         // 3d. Load the view.
         header('Content-Type: text/html; charset=utf-8');
-        include $this->viewFilename;
+        //include $this->viewFilename;
+		$html = $this->themeEngine->constructPage($this->view, $this->viewData);
+		echo $html;
     }
- 
+
     // 4. Create a function to facilitate running all the code that needs to execute before
     //    the view is loaded.
     public function preExecute()
     {
-    	$config = SimpleConfig::getInstance();
+        $config = SimpleConfig::getInstance();
 
         // 4a. Figure out if anything needs to be pre-executed at all.
         // 4b. If the view/action combo is home/index, load the summaries of the first five
@@ -157,7 +165,9 @@ class ViewController
             {
                 $article = $articleManager->fetchArticleByID($articleID);
                 $article->reformat();
-                $this->viewData = array('article' => $article);
+                //$this->viewData = array('article' => $article);
+				$this->viewData = array('page_title' => $article->title . ' | ' . $_SERVER['HTTP_HOST'],
+				                        'main_content' => $article->body);
             }
             catch (ArticleManagerException $e)
             {            
@@ -168,10 +178,11 @@ class ViewController
                 }
                 else
                 {
-                	throw new $e;
-				}
+                    throw new $e;
+                }
             } 
         }
     }
 }
+
 

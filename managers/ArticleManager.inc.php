@@ -58,6 +58,11 @@ class ArticleManager implements ArticleManagerI
 	}
 
 	// 2. Fetch the summaries of x articles, offset by y positions.
+	/**
+	 *
+	 * @param mixed $articleID
+	 * @return Article
+	 */
 	public function fetchArticleByID($articleID)
 	{
 		return $this->articleManager->fetchArticleByID($articleID);

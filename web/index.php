@@ -1,7 +1,7 @@
 <?php
 /**
 * Rosetta Blog
-*   Copyright © 2010 Theodore R. Smith <theodore@phpexperts.pro>
+*   Copyright Â© 2010 Theodore R. Smith <theodore@phpexperts.pro>
 * 
 * The following code is licensed under a modified BSD License.
 * All of the terms and conditions of the BSD License apply with one
@@ -59,6 +59,10 @@ function __autoload($name)
 	{
 		require './managers/' . $name . '.inc.php';
 	}
+    else if (substr($name, 0, 3) === 'Pd_')
+    {
+		require './lib/Pd/' . substr($name, 3) . '.php';
+    }
     else if (file_exists('misc/' . $name . '.inc.php'))
     {
         require 'misc/' . $name . '.inc.php';
@@ -77,7 +81,12 @@ function __autoload($name)
 	return false;
 }
 
+// 4. Load the Theme Manager.
+$themeManager = new Drupal5ThemeManager();
+$themeManager->setTheme('garland');
+
 // 4. Load the appropriate view.
-$viewController = new ViewController;
+$viewController = new ViewController($themeManager);
+
 $viewController->displayView();
 
