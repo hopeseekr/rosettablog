@@ -34,7 +34,7 @@ class Drupal5ArticleManager implements ArticleManagerI
 		$DB = MyDB::loadDB();
 
 		// 1c. Attempt to fetch the article from the database.
-		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, body FROM node WHERE nid=?', array($articleID));
+		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, body, format FROM node WHERE nid=?', array($articleID));
 		$article = $DB->fetchObject('Article');
 
 		if ($article === false)
@@ -54,7 +54,7 @@ class Drupal5ArticleManager implements ArticleManagerI
 
 		// 2b. Attempt to fetch the article summaries.
 		$DB = MyDB::loadDB();
-		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, teaser FROM node ' .
+		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, teaser, format FROM node ' .
 		           'WHERE type="story" AND promote=1 ' .
 		           'ORDER BY nid DESC ' . 
 		           "LIMIT $offset, $articleLimit");

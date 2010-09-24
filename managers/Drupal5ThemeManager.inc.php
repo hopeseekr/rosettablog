@@ -34,7 +34,7 @@ if (!function_exists('path_to_theme'))
 	}
 }
 
-class Drupal5ThemeManager
+class Drupal5ThemeManager implements ThemeManagerI
 {
     const THEME_BASE_DIR = 'themes/drupal';
 
@@ -56,18 +56,6 @@ class Drupal5ThemeManager
 		// Needed for path_to_theme(). Frack drupal for forcing me to do this!!
 		$GLOBALS['themePath'] = $this->themePath;
     }
-
-    private function translateViewData(&$viewData)
-	{
-		$origData = $viewData;
-		$viewData = array('head_title' => $origData['page_title'],
-		                  'content' => $origData['main_content']);
-	}
-
-    private function initializeTheme()
-	{
-
-	}
 
     public function constructPage($view, array $viewData = null)
 	{
@@ -92,6 +80,18 @@ class Drupal5ThemeManager
 		$html = $this->loadBlock('page');
 
 		return $html;
+	}
+
+    private function translateViewData(&$viewData)
+	{
+		$origData = $viewData;
+		$viewData = array('head_title' => $origData['page_title'],
+		                  'content' => $origData['main_content']);
+	}
+
+    private function initializeTheme()
+	{
+
 	}
 
 	private function loadBlock($block)

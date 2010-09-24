@@ -18,26 +18,29 @@
 interface ThemeManagerI
 {
     public function setTheme($themeName);
-    public function translateViewData(&$viewData);
-    public function initializeTheme();
-    public function showTheme($section);
+	public function constructPage($view, array $viewData = null);
 }
 
 /* Delegate pattern. */
 class ThemeManager implements ThemeManagerI
 {
     /** @var ThemeManagerI **/
-    private $themeManager;
+    private $themeEngine;
 
-    public function __construct($blogPlatform)
+    public function __construct($themePlatform)
     {
         // Pick the right theme.
-        $className = $blogPlatform . 'ThemeManager';
-        $this->themeManager = new $blogPlatform();
+        $className = $themePlatform . 'ThemeManager';
+        $this->themeEngine = new $className();
     }
 
     public function setTheme($themeName)
     {
-        return $this->themeManager->setTheme($themeName);
+        return $this->themeEngine->setTheme($themeName);
     }
+
+	public function constructPage($view, array $viewData = null)
+	{
+		return $this->themeEngine->constructPage($view, $viewData);
+	}
 }

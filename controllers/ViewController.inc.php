@@ -28,7 +28,11 @@ class ViewController
     const ERROR_INVALID_FILE_NAME = 1;
     const ERROR_FILE_NOT_FOUND = 2;
 
-	/** @var ThemeManagerI **/
+	const ARTICLE_FORMAT_FILTERED = 1;
+	const ARTICLE_FORMAT_PHP = 2;
+	const ARTICLE_FORMAT_HTML = 3;
+
+	/** @var ThemeManager **/
 	private $themeEngine;
 
 	private $view;
@@ -146,9 +150,9 @@ class ViewController
             $summaries = $articleManager->fetchArticleSummaries(5);
 
             // 4c. Tweak the results received.
-            foreach ($summaries as $summary)
+            foreach ($summaries as /** @var Article **/ $summary)
             {
-                $summary->reformat();
+                $this->reformatArticleProperties($summary);
             }
 
             $this->viewData = array('summaries' => $summaries);
@@ -160,12 +164,14 @@ class ViewController
 
             // 4e. Get the article.
             $articleManager = new ArticleManager($config['blog_platform']);
-
             try
             {
                 $article = $articleManager->fetchArticleByID($articleID);
-                $article->reformat();
-                //$this->viewData = array('article' => $article);
+
+				// 4f. Reformat the data.
+				$this->reformatArticleProperties($article);
+
+				//$this->viewData = array('article' => $article);
 				$this->viewData = array('page_title' => $article->title . ' | ' . $_SERVER['HTTP_HOST'],
 				                        'main_content' => $article->body);
             }
@@ -183,6 +189,21 @@ class ViewController
             } 
         }
     }
+
+	/**
+	 * @param Article $article
+	 */
+	private function reformatArticleProperties(&$article)
+	{
+        $article->created = date('Y-m-d h:i:s', $article->created);
+        $article->lastModified = date('Y-m-d h:i:s', $article->lastModified);
+
+		if ($article->format == self::ARTICLE_FORMAT_FILTERED)
+		{
+			$article->teaser = !empty($article->teaser) ? nl2p($article->teaser) : null;
+			$article->body = !empty($article->body) ? nl2p($article->body) : null;
+		}
+	}
 }
 
 

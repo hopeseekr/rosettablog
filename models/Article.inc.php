@@ -1,7 +1,7 @@
 <?php
 /**
 * Rosetta Blog
-*   Copyright © 2010 Theodore R. Smith <theodore@phpexperts.pro>
+*   Copyright ï¿½ 2010 Theodore R. Smith <theodore@phpexperts.pro>
 * 
 * The following code is licensed under a modified BSD License.
 * All of the terms and conditions of the BSD License apply with one
@@ -28,12 +28,6 @@ class Article
     public $lastModified;
     public $teaser;
     public $body;
- 
-    // 1. Reformat the object.
-    public function reformat()
-    {
-        $this->created = date('Y-m-d h:i:s', $this->created);
-        $this->lastModified = date('Y-m-d h:i:s', $this->lastModified);
-    }
+	public $format;
 }
 

@@ -42,6 +42,13 @@ require './lib/MyDB.inc.php';
 
 // 1c. Load helper functions.
 require './lib/misc.inc.php';
+$config = new MyDBConfigStruct;
+$config->hostname = 'localhost';
+$config->username = 'xmule';
+$config->password = 'VZvSLdbjMPCxBZX7';
+$config->database = 'xmule_drupal';
+MyDB::loadDB($config);
+unset($config);
 
 // 2. Start up the SimpleConfig library.
 require './lib/SimpleConfig.php';
@@ -82,11 +89,12 @@ function __autoload($name)
 }
 
 // 4. Load the Theme Manager.
-$themeManager = new Drupal5ThemeManager();
-$themeManager->setTheme('garland');
+$config = SimpleConfig::getInstance();
+$themeEngine = new ThemeManager($config['theme_platform']);
+$themeEngine->setTheme($config['theme']);
 
 // 4. Load the appropriate view.
-$viewController = new ViewController($themeManager);
+$viewController = new ViewController($themeEngine);
 
 $viewController->displayView();
 
