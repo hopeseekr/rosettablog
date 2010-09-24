@@ -24,7 +24,7 @@ class Article
 {
     public $id;
     public $title;
-    public $created;
+    public $creationDate;
     public $lastModified;
     public $teaser;
     public $body;

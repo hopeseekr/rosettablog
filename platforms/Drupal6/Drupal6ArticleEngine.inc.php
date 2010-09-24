@@ -35,7 +35,7 @@ class Drupal6ArticleEngine implements ArticleEngine
 
 		// 1c. Attempt to fetch the article from the database.
 		$sql = <<<SQL
-SELECT n.nid AS id, n.type, n.vid, n.uid, nr.title, nr.body, n.status, n.created, nr.timestamp AS changed, 
+SELECT n.nid AS id, n.type, n.vid, n.uid, nr.title, nr.body, n.status, n.created AS creationDate, nr.timestamp AS lastModified,
        n.comment, n.promote, n.moderate, n.sticky, nr.format, nr.log 
 FROM node n 
 JOIN node_revisions nr USING(nid, vid) 
@@ -62,7 +62,7 @@ SQL;
 		// 2b. Attempt to fetch the article summaries.
 		$DB = MyDB::loadDB();
 		$sql = <<<SQL
-SELECT n.nid AS id, n.type, n.vid, n.uid, nr.title, nr.teaser, n.status, n.created, nr.timestamp AS changed, 
+SELECT n.nid AS id, n.type, n.vid, n.uid, nr.title, nr.teaser, n.status, n.created AS creationDate, nr.timestamp AS lastModified,
        n.comment, n.promote, n.moderate, n.sticky, nr.format, nr.log 
 FROM node n 
 JOIN node_revisions nr USING(nid, vid) 

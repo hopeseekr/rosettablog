@@ -34,7 +34,7 @@ class Drupal5ArticleEngine implements ArticleEngine
 		$DB = MyDB::loadDB();
 
 		// 1c. Attempt to fetch the article from the database.
-		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, body, format FROM node WHERE nid=?', array($articleID));
+		$DB->query('SELECT nid AS id, title, created AS creationDate, changed AS lastModified, body, format FROM node WHERE nid=?', array($articleID));
 		$article = $DB->fetchObject('Article');
 
 		if ($article === false)
@@ -54,7 +54,7 @@ class Drupal5ArticleEngine implements ArticleEngine
 
 		// 2b. Attempt to fetch the article summaries.
 		$DB = MyDB::loadDB();
-		$DB->query('SELECT nid AS id, title, created, changed AS lastModified, teaser, format FROM node ' .
+		$DB->query('SELECT nid AS id, title, created AS creationDate, changed AS lastModified, teaser, format FROM node ' .
 		           'WHERE type="story" AND promote=1 ' .
 		           'ORDER BY nid DESC ' . 
 		           "LIMIT $offset, $articleLimit");
