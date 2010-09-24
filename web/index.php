@@ -66,9 +66,16 @@ function __autoload($name)
 	{
 		require './managers/' . $name . '.inc.php';
 	}
-    else if (substr($name, 0, 3) === 'Pd_')
+    else if (($index = strpos($name, 'ThemeEngine')) !== false)
     {
-		require './lib/Pd/' . substr($name, 3) . '.php';
+		$platform = substr($name, 0, $index);
+		require './platforms/' . $platform . '/' . $name . '.inc.php';
+    }
+	else if (($index = strpos($name, 'ArticleEngine')) !== false)
+    {
+		$platform = substr($name, 0, $index);
+//		echo  './platforms/' . $platform . '/' . $name . '.inc.php'; exit;
+		require './platforms/' . $platform . '/' . $name . '.inc.php';
     }
     else if (file_exists('misc/' . $name . '.inc.php'))
     {

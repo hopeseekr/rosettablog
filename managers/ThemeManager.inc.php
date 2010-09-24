@@ -15,14 +15,14 @@
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
 
-interface ThemeManagerI
+interface ThemeEngine
 {
     public function setTheme($themeName);
 	public function constructPage($view, array $viewData = null);
 }
 
 /* Delegate pattern. */
-class ThemeManager implements ThemeManagerI
+class ThemeManager implements ThemeEngine
 {
     /** @var ThemeManagerI **/
     private $themeEngine;
@@ -30,7 +30,7 @@ class ThemeManager implements ThemeManagerI
     public function __construct($themePlatform)
     {
         // Pick the right theme.
-        $className = $themePlatform . 'ThemeManager';
+        $className = $themePlatform . 'ThemeEngine';
         $this->themeEngine = new $className();
     }
 

@@ -34,7 +34,7 @@ if (!function_exists('path_to_theme'))
 	}
 }
 
-class Drupal5ThemeManager implements ThemeManagerI
+class Drupal5ThemeEngine implements ThemeEngine
 {
     const THEME_BASE_DIR = 'themes/drupal';
 

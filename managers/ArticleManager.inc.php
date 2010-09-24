@@ -21,7 +21,7 @@ class ArticleManagerException extends Exception
 	const ARTICLE_NOT_FOUND = 2;
 }
 
-interface ArticleManagerI
+interface ArticleEngine
 {
 	/**
 	*  1. Fetch an article based on its ID.
@@ -41,20 +41,20 @@ interface ArticleManagerI
 * articles, among other responsibilities.
 * Uses the delegate pattern.
 */
-class ArticleManager implements ArticleManagerI
+class ArticleManager implements ArticleEngine
 {
-	/** @var ArticleManagerI **/
-	private $articleManager;
+	/** @var ArticleEngine **/
+	private $articleEngine;
 
 	public function __construct($blogPlatform)
 	{
-		$className = $blogPlatform . 'ArticleManager';
-		$this->articleManager = new $className();
+		$className = $blogPlatform . 'ArticleEngine';
+		$this->articleEngine = new $className();
 	}
 
 	public function fetchArticleByName($articleName)
 	{
-		return $this->articleManager->fetchArticleByName($articleName);
+		return $this->articleEngine->fetchArticleByName($articleName);
 	}
 
 	// 2. Fetch the summaries of x articles, offset by y positions.
@@ -65,12 +65,12 @@ class ArticleManager implements ArticleManagerI
 	 */
 	public function fetchArticleByID($articleID)
 	{
-		return $this->articleManager->fetchArticleByID($articleID);
+		return $this->articleEngine->fetchArticleByID($articleID);
 	}
 
 	public function fetchArticleSummaries($articleLimit, $offset = 0)
 	{
-		return $this->articleManager->fetchArticleSummaries($articleLimit, $offset);
+		return $this->articleEngine->fetchArticleSummaries($articleLimit, $offset);
 	}
 }
 

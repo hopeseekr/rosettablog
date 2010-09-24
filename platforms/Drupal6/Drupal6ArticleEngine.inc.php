@@ -15,7 +15,7 @@
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
 
-class Drupal6ArticleManager implements ArticleManagerI
+class Drupal6ArticleEngine implements ArticleEngine
 {
 	/**
 	*  1. Fetch an article based on its ID.
