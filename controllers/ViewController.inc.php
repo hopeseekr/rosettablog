@@ -155,8 +155,12 @@ class ViewController
 				$this->reformatArticleProperties($article);
 
 				//$this->viewData = array('article' => $article);
-				$this->viewData = array('page_title' => $article->title . ' | ' . $_SERVER['HTTP_HOST'],
-				                        'main_content' => $article->body);
+				$this->viewData = array('page_title'    => $article->title . ' | ' . $_SERVER['HTTP_HOST'],
+				                        'article_id'    => $article->id,
+				                        'article_title' => $article->title,
+				                        'main_content'  => $article->body,
+				                        'creation_date' => $article->creationDate,
+				                        'last_modified' => $article->lastModified);
             }
             catch (ArticleManagerException $e)
             {            
@@ -178,7 +182,7 @@ class ViewController
 	 */
 	private function reformatArticleProperties(&$article)
 	{
-        $article->created = date('Y-m-d h:i:s', $article->created);
+        $article->creationDate = date('Y-m-d h:i:s', $article->creationDate);
         $article->lastModified = date('Y-m-d h:i:s', $article->lastModified);
 
 		if ($article->format == self::ARTICLE_FORMAT_FILTERED)

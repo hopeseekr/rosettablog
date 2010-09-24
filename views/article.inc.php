@@ -29,10 +29,10 @@ $rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '
 		<h1>Incendiary.ws</h1>
         <div class="breadcrumbs"><a href="">Home</a></div>
 		<div class="article_box">
-			<h2><a href="<?php echo url_a("index.php?view=article&id={$article->id}"); ?>"><?php echo $article->title; ?></a></h2>
+			<h2><a href="<?php echo url_a("index.php?view=article&id={$article_id}"); ?>"><?php echo $article_title; ?></a></h2>
 			<ul>
-				<li>Created: <?php echo $article->created; ?></li>
-				<li>Last modified: <?php echo $article->lastModified; ?></li>
+				<li>Created: <?php echo $creation_date; ?></li>
+				<li>Last modified: <?php echo $last_modified; ?></li>
 			</ul>
 			<p class="article_body"><?php echo $main_content; ?></p>
 		</div>

@@ -1,7 +1,7 @@
 <?php
 /**
 * Rosetta Blog
-*   Copyright © 2010 Theodore R. Smith <theodore@phpexperts.pro>
+*   Copyright ï¿½ 2010 Theodore R. Smith <theodore@phpexperts.pro>
 * 
 * The following code is licensed under a modified BSD License.
 * All of the terms and conditions of the BSD License apply with one
@@ -32,10 +32,10 @@
 			<li class="article_box">
 				<h2><a href="<?php echo url_a("index.php?view=article&id={$summary->id}"); ?>"><?php echo $summary->title; ?></a></h2>
 				<ul>
-					<li>Created: <?php echo $summary->created; ?></li>
+					<li>Created: <?php echo $summary->creationDate; ?></li>
 					<li>Last modified: <?php echo $summary->lastModified; ?></li>
 				</ul>
-				<p class="artible_body"><?php echo nl2p($summary->teaser); ?></p>
+				<p class="artible_body"><?php echo $summary->teaser; ?></p>
 			</li>
 <?php
 	}	
