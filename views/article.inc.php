@@ -34,7 +34,7 @@ $rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '
 				<li>Created: <?php echo $article->created; ?></li>
 				<li>Last modified: <?php echo $article->lastModified; ?></li>
 			</ul>
-			<p class="artible_body"><?php echo nl2p($article->body); ?></p>
+			<p class="article_body"><?php echo $main_content; ?></p>
 		</div>
 	</body>
 </html>

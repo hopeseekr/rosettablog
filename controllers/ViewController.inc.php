@@ -72,16 +72,6 @@ class ViewController
             return self::ERROR_INVALID_FILE_NAME;
         }
 
-        // 2b. Let's see if the view exists.
-        $filename = "./views/$view.inc.php";
-        if (file_exists($filename) === false)
-        {
-            return self::ERROR_FILE_NOT_FOUND;
-        }
-
-        // 2c. If it got this far, it must be a valid view!
-        $this->viewFilename = $filename;
-
         return self::VALID_VIEW;
     }
 
@@ -122,15 +112,8 @@ class ViewController
         // 3b: Run any code that needs to be pre-executed based on the view/action.
         $this->preExecute();
 
-        // 3c. Explode out all of the data from self::preExecute() into the view's scope.
-        if (!is_null($this->viewData) && is_array($this->viewData))
-        {
-            extract($this->viewData);
-        }
-
-        // 3d. Load the view.
+        // 3c. Load the view.
         header('Content-Type: text/html; charset=utf-8');
-        //include $this->viewFilename;
 		$html = $this->themeEngine->constructPage($this->view, $this->viewData);
 		echo $html;
     }
