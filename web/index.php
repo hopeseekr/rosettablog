@@ -42,13 +42,14 @@ require './lib/MyDB.inc.php';
 
 // 1c. Load helper functions.
 require './lib/misc.inc.php';
+/*
 $config = new MyDBConfigStruct;
 $config->hostname = 'localhost';
 $config->username = 'xmule';
 $config->password = 'VZvSLdbjMPCxBZX7';
 $config->database = 'xmule_drupal';
 MyDB::loadDB($config);
-unset($config);
+unset($config);*/
 
 // 2. Start up the SimpleConfig library.
 require './lib/SimpleConfig.php';
