@@ -49,7 +49,8 @@ $config->username = 'xmule';
 $config->password = 'VZvSLdbjMPCxBZX7';
 $config->database = 'xmule_drupal';
 MyDB::loadDB($config);
-unset($config);*/
+unset($config);
+*/
 
 // 2. Start up the SimpleConfig library.
 require './lib/SimpleConfig.php';
@@ -74,9 +75,15 @@ function __autoload($name)
     }
 	else if (($index = strpos($name, 'ArticleEngine')) !== false)
     {
-		$platform = substr($name, 0, $index);
-//		echo  './platforms/' . $platform . '/' . $name . '.inc.php'; exit;
-		require './platforms/' . $platform . '/' . $name . '.inc.php';
+		if (file_exists('./platforms/' . $name . '.inc.php'))
+		{
+			require './platforms/' . $name . '.inc.php';
+		}
+		else
+		{
+			$platform = substr($name, 0, $index);
+			require './platforms/' . $platform . '/' . $name . '.inc.php';
+		}
     }
     else if (file_exists('misc/' . $name . '.inc.php'))
     {

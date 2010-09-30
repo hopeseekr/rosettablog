@@ -118,6 +118,18 @@ class ViewController
 		echo $html;
     }
 
+	private function getArticleEngine()
+	{
+		$config = SimpleConfig::getInstance();
+		$className = $config['blog_platform'] . 'ArticleEngine';
+		if (!class_exists($className))
+		{
+			throw new RuntimeException('Invalid or unsupported blog platform for articles: ' . $config['blog_platform']);
+		}
+
+		return new $className();
+	}
+
     // 4. Create a function to facilitate running all the code that needs to execute before
     //    the view is loaded.
     public function preExecute()
@@ -129,7 +141,8 @@ class ViewController
         //     articles.
         if ($this->view == 'home' and $this->action == 'index')
         {
-            $articleManager = new ArticleManager($config['blog_platform']);
+			$articleEngine = $this->getArticleEngine();
+            $articleManager = new ArticleManager($articleEngine);
             $summaries = $articleManager->fetchArticleSummaries(5);
 
             // 4c. Tweak the results received.
@@ -146,7 +159,8 @@ class ViewController
             $articleID = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
             // 4e. Get the article.
-            $articleManager = new ArticleManager($config['blog_platform']);
+			$articleEngine = $this->getArticleEngine();
+            $articleManager = new ArticleManager($articleEngine);
             try
             {
                 $article = $articleManager->fetchArticleByID($articleID);

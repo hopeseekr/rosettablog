@@ -21,21 +21,6 @@ class ArticleManagerException extends Exception
 	const ARTICLE_NOT_FOUND = 2;
 }
 
-interface ArticleEngine
-{
-	/**
-	*  1. Fetch an article based on its ID.
-	* 
-	* @param int $articleID
-	* @return Article
-	*/
-	public function fetchArticleByName($articleName);
-
-	// 2. Fetch the summaries of x articles, offset by y positions.
-	public function fetchArticleByID($articleID);
-	public function fetchArticleSummaries($articleLimit, $offset = 0);
-}
-
 /**
 * The ArticleManager is responsible for creating, reading, updating, and deleting blog 
 * articles, among other responsibilities.
@@ -46,10 +31,9 @@ class ArticleManager implements ArticleEngine
 	/** @var ArticleEngine **/
 	private $articleEngine;
 
-	public function __construct($blogPlatform)
+	public function __construct(ArticleEngine $articleEngine)
 	{
-		$className = $blogPlatform . 'ArticleEngine';
-		$this->articleEngine = new $className();
+		$this->articleEngine = $articleEngine;
 	}
 
 	public function fetchArticleByName($articleName)
