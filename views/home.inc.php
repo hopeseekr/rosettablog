@@ -18,6 +18,7 @@
 <html>
 	<head>
 		<title>incendiary.ws</title>
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
 		<link type="text/css" rel="stylesheet" href="/css/main.css"/>
 	</head>
 	<body>
