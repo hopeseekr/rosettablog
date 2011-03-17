@@ -21,9 +21,7 @@ $rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '
 	<head>
         <base href="<?php echo $rootDir; ?>"/>
 		<title><?php echo $page_title; ?></title>
-		<style type="text/css" rel="stylesheet" media="all">
-.article_box { border: 1px solid #aaa; width: 40em; padding: 15px 30px 15px 30px; margin: 10px 0 10px 0; }
-		</style>
+		<link type="text/css" rel="stylesheet" href="/css/main.css"/>
 	</head>
 	<body>
 		<h1>Incendiary.ws</h1>
