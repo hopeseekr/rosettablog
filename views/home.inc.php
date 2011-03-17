@@ -18,9 +18,8 @@
 <html>
 	<head>
 		<title>incendiary.ws</title>
-		<style type="text/css" rel="stylesheet" media="all">
-.article_box { border: 1px solid #aaa; width: 40em; padding: 15px 30px 15px 30px; margin: 10px 0 10px 0; }
-		</style>
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
+		<link type="text/css" rel="stylesheet" href="/css/main.css"/>
 	</head>
 	<body>
 		<h1>Incendiary.ws</h1>

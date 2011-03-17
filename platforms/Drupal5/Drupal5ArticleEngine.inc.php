@@ -26,7 +26,7 @@ class Drupal5ArticleEngine implements ArticleEngine
 	public function fetchArticleByID($articleID)
 	{
 		// 1a. Run sanity checks on $articleID.
-		if (is_null($articleID) || !is_numeric($articleID)) { throw new Exception("Parameter articleID is invalid", ArticleManagerException::INVALID_PARAM); }
+		if (is_null($articleID) || !is_numeric($articleID)) { throw new ArticleManagerException("Parameter articleID is invalid", ArticleManagerException::INVALID_PARAM); }
 
 		// 1b. Load the DB object.
 		// NOTE: In true "Tell, Don't Ask" fashion, we don't have to worry at all about

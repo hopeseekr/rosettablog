@@ -56,8 +56,23 @@ class ViewController
     {
         // The code below means, "If the URL parameter view= is set, grab its sanitized value via the input 
         // filter, or use the default value 'home'."
-        $this->view = isset($_GET['view']) ? filter_input(INPUT_GET, 'view', FILTER_SANITIZE_STRING) : 'home';
-        $this->action = isset($_GET['action']) ? filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING) : 'index';
+		if (!isset($_GET['view']))
+		{
+			if ($_SERVER['SCRIPT_URL'] == '/')
+			{
+				$this->view = 'home';
+				$this->action = 'index';
+			}
+			else
+			{
+				$this->display404();
+			}
+		}
+		else
+		{
+	        $this->view = filter_input(INPUT_GET, 'view', FILTER_SANITIZE_STRING);
+    	    $this->action = isset($_GET['action']) ? filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING) : 'index';
+		}
     }
 
     // 2. Let's create a function to determine whether a view exists or not.
@@ -179,14 +194,7 @@ class ViewController
             catch (ArticleManagerException $e)
             {            
                 // 4f. If the article can't be found, set the view to the 404 page.
-                if ($e->getCode() === ArticleManagerException::ARTICLE_NOT_FOUND)
-                {
-                    $this->display404();
-                }
-                else
-                {
-                    throw new $e;
-                }
+                $this->display404();
             } 
         }
     }
