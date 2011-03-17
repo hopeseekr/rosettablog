@@ -165,14 +165,7 @@ class ViewController
             catch (ArticleManagerException $e)
             {            
                 // 4f. If the article can't be found, set the view to the 404 page.
-                if ($e->getCode() === ArticleManagerException::ARTICLE_NOT_FOUND)
-                {
-                    $this->display404();
-                }
-                else
-                {
-                    throw new $e;
-                }
+                $this->display404();
             } 
         }
     }
