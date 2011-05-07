@@ -1,6 +1,5 @@
 RewriteEngine on
-RewriteBase /rosettablog/dev/web/
-
+#RewriteBase /rosettablog/web/
 
 # Pretty URLs
 ## Rosetta
