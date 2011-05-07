@@ -17,12 +17,12 @@
 ?>
 <html>
 	<head>
-		<title>incendiary.ws</title>
+		<title><?php echo $config['blog_name']; ?></title>
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
 		<link type="text/css" rel="stylesheet" href="/css/main.css"/>
 	</head>
 	<body>
-		<h1>Incendiary.ws</h1>
+		<h1><?php echo $config['blog_name']; ?></h1>
 		<ol>
 <?php
 	foreach ($summaries as $summary)

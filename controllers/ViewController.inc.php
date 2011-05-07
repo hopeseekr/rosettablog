@@ -160,7 +160,8 @@ class ViewController
                 $this->reformatArticleProperties($summary);
             }
 
-            $this->viewData = array('summaries' => $summaries);
+            $this->viewData = array('config'    => $config,
+			                        'summaries' => $summaries);
         }
         else if ($this->view == 'article' and $this->action == 'index')
         {
@@ -178,7 +179,8 @@ class ViewController
 				$this->reformatArticleProperties($article);
 
 				//$this->viewData = array('article' => $article);
-				$this->viewData = array('page_title'    => $article->title . ' | ' . $_SERVER['HTTP_HOST'],
+				$this->viewData = array('config'        => $config,
+				                        'page_title'    => $article->title . ' | ' . $config['blog_name'],
 				                        'article_id'    => $article->id,
 				                        'article_title' => $article->title,
 				                        'main_content'  => $article->body,
