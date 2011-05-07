@@ -36,28 +36,28 @@ if (!function_exists('path_to_theme'))
 
 class Drupal5ThemeEngine implements ThemeEngine
 {
-    const THEME_BASE_DIR = 'themes/drupal';
+	const THEME_BASE_DIR = 'themes/drupal';
 
-    private $themeName;
-    private $themePath;
+	private $themeName;
+	private $themePath;
 	private $viewData;
 
-    public function setTheme($themeName)
-    {
-        $this->themePath = self::THEME_BASE_DIR . '/' . $themeName;
+	public function setTheme($themeName)
+	{
+		$this->themePath = self::THEME_BASE_DIR . '/' . $themeName;
 
-        if (!file_exists('web/' . $this->themePath))
-        {
-            throw new RuntimeException('Cannot find theme "' . $themeName . '".');
-        }
+		if (!file_exists('web/' . $this->themePath))
+		{
+			throw new RuntimeException('Cannot find theme "' . $themeName . '".');
+		}
 
-        $this->themeName = 'web/' . $themeName;
+		$this->themeName = 'web/' . $themeName;
 
 		// Needed for path_to_theme(). Frack drupal for forcing me to do this!!
 		$GLOBALS['themePath'] = $this->themePath;
-    }
+	}
 
-    public function constructPage($view, array $viewData = null)
+	public function constructPage($view, array $viewData = null)
 	{
 		// a. Convert the view variables to the theme engine's standard.
 		$this->translateViewData($viewData);
@@ -67,7 +67,7 @@ class Drupal5ThemeEngine implements ThemeEngine
 		$bootstrap_path = $this->themePath . '/' . 'template.php';
 		if (file_exists('web/' . $bootstrap_path))
 		{
-			include 'web/' . $bootstrap_path;
+			include ROSETTA_APP_PATH . '/web/' . $bootstrap_path;
 		}
 
 		// c. Load the main content.
@@ -82,21 +82,21 @@ class Drupal5ThemeEngine implements ThemeEngine
 		return $html;
 	}
 
-    private function translateViewData(&$viewData)
+	private function translateViewData(&$viewData)
 	{
 		$origData = $viewData;
 		$viewData = array('head_title' => $origData['page_title'],
-		                  'content' => $origData['main_content']);
+						  'content' => $origData['main_content']);
 	}
 
-    private function initializeTheme()
+	private function initializeTheme()
 	{
 
 	}
 
 	private function loadBlock($block)
 	{
-		$filename = 'web/' . $this->themePath . '/' . $block . '.tpl.php';
+		$filename = ROSETTA_APP_PATH . '/web/' . $this->themePath . '/' . $block . '.tpl.php';
 		if (!file_exists($filename))
 		{
 			throw new RuntimeException('Couldnt load block "' . $block . '"');
