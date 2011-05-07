@@ -14,12 +14,14 @@
 *
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
+$rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/') + 1);
 ?>
 <html>
 	<head>
+		<base href="<?php echo $rootDir; ?>"/>
 		<title><?php echo $config['blog_name']; ?></title>
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
-		<link type="text/css" rel="stylesheet" href="/css/main.css"/>
+		<link type="text/css" rel="stylesheet" href="css/main.css"/>
 	</head>
 	<body>
 		<h1><?php echo $config['blog_name']; ?></h1>
