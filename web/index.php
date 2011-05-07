@@ -41,7 +41,6 @@ define('ROSETTA_APP_PATH', realpath(dirname(__FILE__) . '/../'));
 
 // 1b. Load the database abstraction library.
 require ROSETTA_APP_PATH . '/lib/MyDB.inc.php';
-require ROSETTA_APP_PATH . '/lib/MyDB.inc.php';
 
 // 1c. Load helper functions.
 require ROSETTA_APP_PATH . '/lib/misc.inc.php';

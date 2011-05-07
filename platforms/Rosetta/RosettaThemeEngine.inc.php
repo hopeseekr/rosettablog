@@ -52,7 +52,7 @@ class RosettaThemeEngine implements ThemeEngine
 	private function getViewFile($view)
 	{
         // Let's see if the view exists.
-        $filename = "./views/$view.inc.php";
+        $filename = ROSETTA_APP_PATH . "/views/$view.inc.php";
         if (file_exists($filename) === false)
         {
             throw new RuntimeException(ViewController::ERROR_FILE_NOT_FOUND);

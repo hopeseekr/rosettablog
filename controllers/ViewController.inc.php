@@ -58,15 +58,9 @@ class ViewController
         // filter, or use the default value 'home'."
 		if (!isset($_GET['view']))
 		{
-			if ($_SERVER['SCRIPT_URL'] == '/')
-			{
-				$this->view = 'home';
-				$this->action = 'index';
-			}
-			else
-			{
-				$this->display404();
-			}
+			// FIXME: This logic (or lack thereof) **really** needs some work.
+			$this->view = 'home';
+			$this->action = 'index';
 		}
 		else
 		{
