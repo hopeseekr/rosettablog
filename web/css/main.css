@@ -2,7 +2,7 @@ body {
 	background-color: #858a6f;
 	background-image: url("../images/bacgroundGraphic.png");
 	background-attachment: fixed;
-	background-position: 58% 25%;
+	background-position: 68% 29%;
 	background-repeat: no-repeat;
 	font-family: "Tahoma";
 	}
@@ -17,7 +17,7 @@ body {
 	padding-right: 30px;
 	padding-bottom: 15px;
 	padding-left: 30px;
-	width: 40em;
+	width: 50em;
 	background-color: #fff;
 	border: none;
 	corner-radius: 10px;
