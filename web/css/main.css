@@ -1,6 +1,10 @@
 body { 
+	background-color: #909871;
+	background-image: url(".././images/backgroundGraphic.png");
+	background-attachment: fixed;
+	background-position: 53% 20%;
+	background-repeat: no-repeat;
 	font-family: "Tahoma";
-	background: #000;
 	}
 	
 /* teaser box */
