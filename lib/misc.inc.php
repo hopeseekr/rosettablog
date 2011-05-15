@@ -32,6 +32,12 @@ function nl2p($text)
 
 function url_a($url_in, $noEscaping = false)
 {
+	// See if URLFactory can handle it directly...
+	if (($url = URLFactory::makePrettyURL($url_in)) != false)
+	{
+		return $url;
+	}
+
     $config = SimpleConfig::getInstance();
     $parts = parse_url($url_in);
 

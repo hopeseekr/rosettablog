@@ -32,7 +32,7 @@ class URLFactory
             }
         }
         
-        return new RosettaURL;
+        return new RosettaURLScheme;
     }
 
     public static function makePrettyURL($args)
@@ -43,10 +43,36 @@ class URLFactory
     }
 }
 
-class RosettaURL
+interface URLSchemeI
+{
+	public function makePrettyURL($params);
+}
+
+// FIXME?? This may be much better as a Strategy Pattern.
+class CommonURLScheme implements URLSchemeI
+{
+
+	public function makePrettyURL($params)
+	{
+		if ($params == 'baseURL')
+		{
+			$protocol = !isset($_SERVER['HTTPS']) ? 'http' : 'https';
+			$domain = $_SERVER['HTTP_HOST'];
+			$basePath = substr($_SERVER['SCRIPT_NAME'], 1, strrpos($_SERVER['SCRIPT_NAME'], '/') - 1);
+
+			$baseURL = sprintf("%s://%s/%s/", $protocol, $domain, $basePath);
+
+			return $baseURL;
+		}
+	}
+}
+
+class RosettaURLScheme extends CommonURLScheme implements URLSchemeI
 {
     public function makePrettyURL($params)
     {
+		$url = parent::makePrettyURL($params);
+
         if (isset($params['view']) && $params['view'] == 'article')
         {
             $url = 'article/' . $params['id'];
@@ -63,10 +89,12 @@ class RosettaURL
     }
 }
 
-class DrupalURL
+class DrupalURLScheme extends CommonURLScheme implements URLSchemeI
 {
     public function makePrettyURL($params)
     {
+		$url = parent::makePrettyURL($params);
+
         if (isset($params['view']) && $params['view'] == 'article')
         {
             $url = 'node/' . $params['id'];
