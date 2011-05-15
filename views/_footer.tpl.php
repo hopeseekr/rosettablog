@@ -15,22 +15,5 @@
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
 ?>
-<?php require '_header.tpl.php'; ?>
-		<ol>
-<?php
-	foreach ($summaries as $summary)
-	{
-?>
-			<li class="article_box">
-				<h2><a href="<?php echo url_a("index.php?view=article&id={$summary->id}"); ?>"><?php echo $summary->title; ?></a></h2>
-				<ul>
-					<li>Created: <?php echo $summary->creationDate; ?></li>
-					<li>Last modified: <?php echo $summary->lastModified; ?></li>
-				</ul>
-				<p class="artible_body"><?php echo $summary->teaser; ?></p>
-			</li>
-<?php
-	}	
-?>
-		</ol>
-<?php require '_footer.tpl.php'; ?>
+	</body>
+</html>
