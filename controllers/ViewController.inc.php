@@ -200,8 +200,8 @@ class ViewController
 	 */
 	private function reformatArticleProperties(&$article)
 	{
-        $article->creationDate = date('Y-m-d h:i:s', $article->creationDate);
-        $article->lastModified = date('Y-m-d h:i:s', $article->lastModified);
+        $article->creationDate = date('Y-m-d H:i:s', $article->creationDate);
+        $article->lastModified = date('Y-m-d H:i:s', $article->lastModified);
 
 		if ($article->format == self::ARTICLE_FORMAT_FILTERED)
 		{
