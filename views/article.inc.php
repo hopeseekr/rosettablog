@@ -22,11 +22,11 @@ $rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '
         <base href="<?php echo $rootDir; ?>"/>
 		<title><?php echo $page_title; ?></title>
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
-		<link type="text/css" rel="stylesheet" href="../web/css/main.css"/>
+		<link type="text/css" rel="stylesheet" href="../css/main.css"/>
 	</head>
 	<body>
-		<h1>Incendiary.ws</h1>
-        <div class="breadcrumbs"><a href="../index.php">Home</a></div>
+		<h1><?php echo $config['blog_name']; ?></h1>
+        <div class="breadcrumbs"><a href="">Home</a></div>
 		<div class="article_box">
 			<h2><a href="<?php echo url_a("index.php?view=article&id={$article_id}"); ?>"><?php echo $article_title; ?></a></h2>
 			<ul>
