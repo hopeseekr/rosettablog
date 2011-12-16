@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__FILE__) . '/../../models/Article.inc.php';
-require_once dirname(__FILE__) . '/../../platforms/ArticleEngine.inc.php';
-require_once dirname(__FILE__) . '/../../managers/ArticleManager.inc.php';
+require_once dirname(__FILE__) . '/../models/Article.inc.php';
+require_once dirname(__FILE__) . '/../platforms/ArticleEngine.inc.php';
+require_once dirname(__FILE__) . '/../managers/ArticleManager.inc.php';
 
 /**
  * Test class for ArticleManager.
