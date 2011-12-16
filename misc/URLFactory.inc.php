@@ -54,12 +54,22 @@ class CommonURLScheme implements URLSchemeI
 
 	public function makePrettyURL($params)
 	{
+		static $baseURL;
 		if ($params == 'baseURL')
 		{
+			if ($baseURL !== null) { return $baseURL; }
+
 			$protocol = !isset($_SERVER['HTTPS']) ? 'http' : 'https';
 			$domain = $_SERVER['HTTP_HOST'];
-			$basePath = substr($_SERVER['SCRIPT_NAME'], 1, strrpos($_SERVER['SCRIPT_NAME'], '/') - 1);
-			$baseURL = sprintf("%s://%s/%s/", $protocol, $domain, $basePath);
+			if (substr_count($_SERVER['SCRIPT_NAME'], '/') === 1)
+			{
+				$baseURL = sprintf("%s://%s/", $protocol, $domain);
+			}
+			else
+			{
+				$basePath = substr($_SERVER['SCRIPT_NAME'], 1, strrpos($_SERVER['SCRIPT_NAME'], '/') - 1);
+				$baseURL = sprintf("%s://%s/%s/", $protocol, $domain, $basePath);
+			}
 
 
 			return $baseURL;
