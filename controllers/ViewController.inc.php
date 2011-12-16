@@ -158,7 +158,7 @@ class ViewController
         {
 			$articleEngine = $this->getArticleEngine();
             $articleManager = new ArticleManager($articleEngine);
-            $summaries = $articleManager->fetchArticleSummaries(5);
+            $summaries = $articleManager->fetchArticleSummaries();
 
             // 4c. Tweak the results received.
             foreach ($summaries as /** @var Article **/ $summary)

@@ -27,5 +27,5 @@ interface ArticleEngine
 
 	// 2. Fetch the summaries of x articles, offset by y positions.
 	public function fetchArticleByID($articleID);
-	public function fetchArticleSummaries($articleLimit, $offset = 0);
+	public function fetchArticleSummaries($articleLimit = 10000000, $offset = 0);
 }

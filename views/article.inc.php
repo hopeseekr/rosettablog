@@ -26,6 +26,7 @@ $rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '
 	</head>
 	<body>
 		<h1>Incendiary.ws</h1>
+		<h4 id="mission">A needle of <em>Hope</em> amid a monstrous haystack of <em>Chaotic Order</em>.</h4>
         <div class="breadcrumbs"><a href="">Home</a></div>
 		<div class="article_box">
 			<h2><a href="<?php echo url_a("index.php?view=article&id={$article_id}"); ?>"><?php echo $article_title; ?></a></h2>

@@ -23,6 +23,7 @@
 	</head>
 	<body>
 		<h1>Incendiary.ws</h1>
+		<h4 id="mission">A needle of <em>Hope</em> amid a monstrous haystack of <em>Chaotic Order</em>.</h4>
 		<ol>
 <?php
 	foreach ($summaries as $summary)

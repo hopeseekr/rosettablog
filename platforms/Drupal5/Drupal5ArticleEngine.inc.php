@@ -46,7 +46,7 @@ class Drupal5ArticleEngine implements ArticleEngine
 	}
 
 	// 2. Fetch the summaries of x articles, offset by y positions.
-	public function fetchArticleSummaries($articleLimit, $offset = 0)
+	public function fetchArticleSummaries($articleLimit = 10000000, $offset = 0)
 	{
 		// 2a. Run sanity checks on the parameters.
 		if (is_null($articleLimit) || !is_numeric($articleLimit)) { throw new ArticleManagerException("Parameter articleLimit is invalid.", ArticleManagerException::INVALID_PARAM); }
@@ -54,7 +54,7 @@ class Drupal5ArticleEngine implements ArticleEngine
 
 		// 2b. Attempt to fetch the article summaries.
 		$DB = MyDB::loadDB();
-		$DB->query('SELECT nid AS id, title, created AS creationDate, changed AS lastModified, teaser, format FROM node ' .
+		$DB->query('SELECT nid AS id, title, created AS creationDate, changed AS lastModified, teaser, format, (teaser = body) teaserEqualsBody FROM node ' .
 		           'WHERE type="story" AND promote=1 ' .
 		           'ORDER BY nid DESC ' . 
 		           "LIMIT $offset, $articleLimit");
@@ -62,6 +62,10 @@ class Drupal5ArticleEngine implements ArticleEngine
 		$summaries = array();
 		while (($article = $DB->fetchObject('Article')))
 		{
+			if ($article->teaserEqualsBody != true)
+			{
+				$article->teaser .= sprintf('<br/><a href="%s">[Read more]</a>', url_a("index.php?view=article&id={$article->id}"));
+			}
 			$summaries[] = $article;
 		}
 

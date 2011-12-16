@@ -29,5 +29,6 @@ class Article
     public $teaser;
     public $body;
 	public $format;
+	public $teaserEqualsBody = false;
 }
 

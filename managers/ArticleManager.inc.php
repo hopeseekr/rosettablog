@@ -52,7 +52,7 @@ class ArticleManager implements ArticleEngine
 		return $this->articleEngine->fetchArticleByID($articleID);
 	}
 
-	public function fetchArticleSummaries($articleLimit, $offset = 0)
+	public function fetchArticleSummaries($articleLimit = 10000000, $offset = 0)
 	{
 		return $this->articleEngine->fetchArticleSummaries($articleLimit, $offset);
 	}
