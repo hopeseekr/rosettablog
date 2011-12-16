@@ -1,5 +1,7 @@
 <?php
 $config['blog_name'] = 'My Blog';
+// mission: optional <string>
+//$config['mission'] = 'Be the best you can be.';
 
 // blog_platform: Rosetta, Drupal5, Drupal6
 $config['blog_platform'] = 'Drupal5';

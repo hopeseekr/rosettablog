@@ -26,5 +26,9 @@ $baseURL = url_a('baseURL');
 	</head>
 	<body>
 		<h1><?php echo $config['blog_name']; ?></h1>
-		<h4 id="mission">A needle of <em>Hope</em> amid a monstrous haystack of <em>Chaos</em>.</h4>
+<?php
+	if (!empty($config['mission'])) {
+?>
+		<h4 id="mission"><?php echo $config['mission']; ?></h4>
+<?php } ?>
         <div class="breadcrumbs"><a href="">Home</a></div>
