@@ -1,3 +1,32 @@
-body { font-family: 'Ubuntu', arial, serif; background: white; }
 .article_box { border: 1px solid #aaa; width: 40em; padding: 15px 30px 15px 30px; margin: 10px 0 10px 0; }
 blockquote { border: 1px dotted grey; padding: 5px 1em 5px 1em; background: #CCCCDD; }
+body { 
+	background-color: #e4f2ff;
+	background-image: url("../images/bacgroundGraphic.png");
+	background-attachment: fixed;
+	background-position: 75% 35%;
+	background-repeat: no-repeat;
+	font-family: "Tahoma";
+	}
+	
+/* teaser box */
+.article_box {
+	margin-top: 10px;
+	margin-right: 0;
+	margin-bottom: 10px;
+	margin-left: 0;
+	padding-top: 15px;
+	padding-right: 30px;
+	padding-bottom: 15px;
+	padding-left: 30px;
+	width: 50em;
+	background-color: #fff;
+	border: none;
+	corner-radius: 10px;
+	-moz-corner-radius: 10px;
+	font-family: "Tahoma";
+	font-size: 14px;
+	line-height: 20px;
+	color: #000;
+	}
+

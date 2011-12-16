@@ -25,11 +25,11 @@ function phptemplate_templates($directory = 'themes') {
  */
 function phptemplate_regions() {
   return array(
-       'left' => t('left sidebar'),
-       'right' => t('right sidebar'),
-       'content' => t('content'),
-       'header' => t('header'),
-       'footer' => t('footer')
+	   'left' => t('left sidebar'),
+	   'right' => t('right sidebar'),
+	   'content' => t('content'),
+	   'header' => t('header'),
+	   'footer' => t('footer')
   );
 }
 
@@ -60,24 +60,24 @@ function _phptemplate_callback($hook, $variables = array(), $suggestions = array
   // Allow specified variables to be overridden
   $variables_function = '_'. $theme_engine .'_variables';
   if (function_exists($variables_function)) {
-    $variables = array_merge($variables, call_user_func($variables_function, $hook, $variables));
+	$variables = array_merge($variables, call_user_func($variables_function, $hook, $variables));
   }
 
   if (isset($variables['template_files'])) {
-    $suggestions = array_merge($suggestions, $variables['template_files']);
+	$suggestions = array_merge($suggestions, $variables['template_files']);
   }
 
   if (isset($variables['template_file'])) {
-    $suggestions[] = $variables['template_file'];
+	$suggestions[] = $variables['template_file'];
   }
 
   $hook_function = '_'. $theme_engine .'_'. $hook;
   $default_function = '_'. $theme_engine .'_default';
   if (function_exists($hook_function)) {
-    return call_user_func($hook_function, $variables, $suggestions);
+	return call_user_func($hook_function, $variables, $suggestions);
   }
   elseif (function_exists($default_function)) {
-    return call_user_func($default_function, $hook, $variables, $suggestions);
+	return call_user_func($default_function, $hook, $variables, $suggestions);
   }
 
 }
@@ -101,21 +101,21 @@ function _phptemplate_default_variables($hook, $variables) {
   $variables['id'] = $count[$hook]++;
 
   if ($hook == 'block') {
-    $count['block_counter'][$sidebar_indicator] = isset($count['block_counter'][$sidebar_indicator]) && is_int($count['block_counter'][$sidebar_indicator]) ? $count['block_counter'][$sidebar_indicator] : 1;
-    $variables['block_zebra'] = ($count['block_counter'][$sidebar_indicator] % 2) ? 'odd' : 'even';
-    $variables['block_id'] = $count['block_counter'][$sidebar_indicator]++;
+	$count['block_counter'][$sidebar_indicator] = isset($count['block_counter'][$sidebar_indicator]) && is_int($count['block_counter'][$sidebar_indicator]) ? $count['block_counter'][$sidebar_indicator] : 1;
+	$variables['block_zebra'] = ($count['block_counter'][$sidebar_indicator] % 2) ? 'odd' : 'even';
+	$variables['block_id'] = $count['block_counter'][$sidebar_indicator]++;
   }
   elseif ($hook == 'page') {
-    $regions = system_region_list($theme);
-    // Load all region content assigned via blocks.
-    foreach (array_keys($regions) as $region) {
-      // Skip blocks in this region that have already been loaded.
-      // This pre-loading is necessary because phptemplate uses variable names different from
-      // the region names, e.g., 'sidebar_left' instead of 'left'.
-      if (!in_array($region, array('left', 'right', 'footer'))) {
-        isset($variables[$region]) ? $variables[$region] .= theme('blocks', $region) : $variables[$region] = theme('blocks', $region);
-      }
-    }
+	$regions = system_region_list($theme);
+	// Load all region content assigned via blocks.
+	foreach (array_keys($regions) as $region) {
+	  // Skip blocks in this region that have already been loaded.
+	  // This pre-loading is necessary because phptemplate uses variable names different from
+	  // the region names, e.g., 'sidebar_left' instead of 'left'.
+	  if (!in_array($region, array('left', 'right', 'footer'))) {
+		isset($variables[$region]) ? $variables[$region] .= theme('blocks', $region) : $variables[$region] = theme('blocks', $region);
+	  }
+	}
   }
   // Tell all templates where they are located.
   $variables['directory'] = path_to_theme();
@@ -130,14 +130,14 @@ function _phptemplate_default_variables($hook, $variables) {
  */
 function phptemplate_features() {
   return array(
-    'toggle_logo',
-    'toggle_comment_user_picture',
-    'toggle_favicon',
-    'toggle_mission',
-    'toggle_name',
-    'toggle_node_user_picture',
-    'toggle_search',
-    'toggle_slogan'
+	'toggle_logo',
+	'toggle_comment_user_picture',
+	'toggle_favicon',
+	'toggle_mission',
+	'toggle_name',
+	'toggle_node_user_picture',
+	'toggle_search',
+	'toggle_slogan'
   );
 }
 
@@ -151,34 +151,34 @@ function phptemplate_page($content, $show_blocks = TRUE) {
 
   /* Set title and breadcrumb to declared values */
   if (drupal_is_front_page()) {
-    $mission = filter_xss_admin(theme_get_setting('mission'));
+	$mission = filter_xss_admin(theme_get_setting('mission'));
   }
 
   /* Add favicon */
   if (theme_get_setting('toggle_favicon')) {
-    drupal_set_html_head('<link rel="shortcut icon" href="'. check_url(theme_get_setting('favicon')) .'" type="image/x-icon" />');
+	drupal_set_html_head('<link rel="shortcut icon" href="'. check_url(theme_get_setting('favicon')) .'" type="image/x-icon" />');
   }
 
   /**
   * Populate sidebars.
   */
   if ($show_blocks) {
-    global $sidebar_indicator;
-    /**
-     * Sidebar_indicator tells the block counting code to count sidebars separately.
-     */
-    $sidebar_indicator = 'left';
-    $sidebar_left = theme('blocks', 'left');
-    if ($sidebar_left != '') {
-      $layout = 'left';
-    }
+	global $sidebar_indicator;
+	/**
+	 * Sidebar_indicator tells the block counting code to count sidebars separately.
+	 */
+	$sidebar_indicator = 'left';
+	$sidebar_left = theme('blocks', 'left');
+	if ($sidebar_left != '') {
+	  $layout = 'left';
+	}
 
-    $sidebar_indicator = 'right';
-    $sidebar_right = theme('blocks', 'right');
-    if ($sidebar_right != '') {
-      $layout = ($layout == 'left') ? 'both' : 'right';
-    }
-    $sidebar_indicator = NULL;
+	$sidebar_indicator = 'right';
+	$sidebar_right = theme('blocks', 'right');
+	if ($sidebar_right != '') {
+	  $layout = ($layout == 'left') ? 'both' : 'right';
+	}
+	$sidebar_indicator = NULL;
   }
   else {
    $layout = 'none';
@@ -186,46 +186,46 @@ function phptemplate_page($content, $show_blocks = TRUE) {
 
   // Construct page title
   if (drupal_get_title()) {
-    $head_title = array(strip_tags(drupal_get_title()), variable_get('site_name', 'Drupal'));
+	$head_title = array(strip_tags(drupal_get_title()), variable_get('site_name', 'Drupal'));
   }
   else {
-    $head_title = array(variable_get('site_name', 'Drupal'));
-    if (variable_get('site_slogan', '')) {
-      $head_title[] = variable_get('site_slogan', '');
-    }
+	$head_title = array(variable_get('site_name', 'Drupal'));
+	if (variable_get('site_slogan', '')) {
+	  $head_title[] = variable_get('site_slogan', '');
+	}
   }
 
   $variables = array(
-    'base_path'           => base_path(),
-    'breadcrumb'          => theme('breadcrumb', drupal_get_breadcrumb()),
-    'closure'             => theme('closure'),
-    'content'             => $content,
-    'feed_icons'          => drupal_get_feeds(),
-    'footer_message'      => filter_xss_admin(variable_get('site_footer', FALSE)) . "\n" . theme('blocks', 'footer'),
-    'head'                => drupal_get_html_head(),
-    'head_title'          => implode(' | ', $head_title),
-    'help'                => theme('help'),
-    'language'            => $GLOBALS['locale'],
-    'layout'              => $layout,
-    'logo'                => theme_get_setting('logo'),
-    'messages'            => theme('status_messages'),
-    'mission'             => isset($mission) ? $mission : '',
-    'primary_links'       => menu_primary_links(),
-    'search_box'          => (theme_get_setting('toggle_search') ? drupal_get_form('search_theme_form') : ''),
-    'secondary_links'     => menu_secondary_links(),
-    'sidebar_left'        => $sidebar_left,
-    'sidebar_right'       => $sidebar_right,
-    'site_name'           => (theme_get_setting('toggle_name') ? variable_get('site_name', 'Drupal') : ''),
-    'site_slogan'         => (theme_get_setting('toggle_slogan') ? variable_get('site_slogan', '') : ''),
-    'css'                 => drupal_add_css(),
-    'styles'              => drupal_get_css(),
-    'scripts'             => drupal_get_js(),
-    'tabs'                => theme('menu_local_tasks'),
-    'title'               => drupal_get_title()
+	'base_path'           => base_path(),
+	'breadcrumb'          => theme('breadcrumb', drupal_get_breadcrumb()),
+	'closure'             => theme('closure'),
+	'content'             => $content,
+	'feed_icons'          => drupal_get_feeds(),
+	'footer_message'      => filter_xss_admin(variable_get('site_footer', FALSE)) . "\n" . theme('blocks', 'footer'),
+	'head'                => drupal_get_html_head(),
+	'head_title'          => implode(' | ', $head_title),
+	'help'                => theme('help'),
+	'language'            => $GLOBALS['locale'],
+	'layout'              => $layout,
+	'logo'                => theme_get_setting('logo'),
+	'messages'            => theme('status_messages'),
+	'mission'             => isset($mission) ? $mission : '',
+	'primary_links'       => menu_primary_links(),
+	'search_box'          => (theme_get_setting('toggle_search') ? drupal_get_form('search_theme_form') : ''),
+	'secondary_links'     => menu_secondary_links(),
+	'sidebar_left'        => $sidebar_left,
+	'sidebar_right'       => $sidebar_right,
+	'site_name'           => (theme_get_setting('toggle_name') ? variable_get('site_name', 'Drupal') : ''),
+	'site_slogan'         => (theme_get_setting('toggle_slogan') ? variable_get('site_slogan', '') : ''),
+	'css'                 => drupal_add_css(),
+	'styles'              => drupal_get_css(),
+	'scripts'             => drupal_get_js(),
+	'tabs'                => theme('menu_local_tasks'),
+	'title'               => drupal_get_title()
   );
 
   if ((arg(0) == 'node') && is_numeric(arg(1))) {
-    $variables['node'] = node_load(arg(1));
+	$variables['node'] = node_load(arg(1));
   }
 
   // Build a list of suggested template files in order of specificity. One
@@ -242,13 +242,13 @@ function phptemplate_page($content, $show_blocks = TRUE) {
   $suggestion = 'page';
   $suggestions = array($suggestion);
   while ($arg = arg($i++)) {
-    $suggestions[] = $suggestion . '-' . $arg;
-    if (!is_numeric($arg)) {
-      $suggestion .= '-' . $arg;
-    }
+	$suggestions[] = $suggestion . '-' . $arg;
+	if (!is_numeric($arg)) {
+	  $suggestion .= '-' . $arg;
+	}
   }
   if (drupal_is_front_page()) {
-    $suggestions[] = 'page-front';
+	$suggestions[] = 'page-front';
   }
 
   return _phptemplate_callback('page', $variables, $suggestions);
@@ -260,24 +260,24 @@ function phptemplate_page($content, $show_blocks = TRUE) {
  */
 function phptemplate_node($node, $teaser = 0, $page = 0) {
   if (module_exists('taxonomy')) {
-    $taxonomy = taxonomy_link('taxonomy terms', $node);
+	$taxonomy = taxonomy_link('taxonomy terms', $node);
   }
   else {
-    $taxonomy = array();
+	$taxonomy = array();
   }
 
   $variables = array(
-    'content'        => ($teaser && $node->teaser) ? $node->teaser : $node->body,
-    'date'           => format_date($node->created),
-    'links'          => $node->links ? theme('links', $node->links, array('class' => 'links inline')) : '',
-    'name'           => theme('username', $node),
-    'node'           => $node,  // we pass the actual node to allow more customization
-    'node_url'       => url('node/'. $node->nid),
-    'page'           => $page,
-    'taxonomy'       => $taxonomy,
-    'teaser'         => $teaser,
-    'terms'          => theme('links', $taxonomy, array('class' => 'links inline')),
-    'title'          => check_plain($node->title)
+	'content'        => ($teaser && $node->teaser) ? $node->teaser : $node->body,
+	'date'           => format_date($node->created),
+	'links'          => $node->links ? theme('links', $node->links, array('class' => 'links inline')) : '',
+	'name'           => theme('username', $node),
+	'node'           => $node,  // we pass the actual node to allow more customization
+	'node_url'       => url('node/'. $node->nid),
+	'page'           => $page,
+	'taxonomy'       => $taxonomy,
+	'teaser'         => $teaser,
+	'terms'          => theme('links', $taxonomy, array('class' => 'links inline')),
+	'title'          => check_plain($node->title)
   );
 
   // Flatten the node object's member fields.
@@ -285,12 +285,12 @@ function phptemplate_node($node, $teaser = 0, $page = 0) {
 
   // Display info only on certain node types.
   if (theme_get_setting('toggle_node_info_' . $node->type)) {
-    $variables['submitted'] = t('Submitted by !a on @b.', array('!a' => theme('username', $node), '@b' => format_date($node->created)));
-    $variables['picture'] = theme_get_setting('toggle_node_user_picture') ? theme('user_picture', $node) : '';
+	$variables['submitted'] = t('Submitted by !a on @b.', array('!a' => theme('username', $node), '@b' => format_date($node->created)));
+	$variables['picture'] = theme_get_setting('toggle_node_user_picture') ? theme('user_picture', $node) : '';
   }
   else {
-    $variables['submitted'] = '';
-    $variables['picture'] = '';
+	$variables['submitted'] = '';
+	$variables['picture'] = '';
   }
 
   return _phptemplate_callback('node', $variables, array('node-' . $node->type));
@@ -302,17 +302,17 @@ function phptemplate_node($node, $teaser = 0, $page = 0) {
  */
 function phptemplate_comment($comment, $links = 0) {
   return _phptemplate_callback('comment', array(
-    'author'    => theme('username', $comment),
-    'comment'   => $comment,
-    'content'   => $comment->comment,
-    'date'      => format_date($comment->timestamp),
-    'links'     => isset($links) ? theme('links', $links) : '',
-    'new'       => $comment->new ? t('new') : '',
-    'picture'   => theme_get_setting('toggle_comment_user_picture') ? theme('user_picture', $comment) : '',
-    'submitted' => t('Submitted by !a on @b.',
-                      array('!a' => theme('username', $comment),
-                            '@b' => format_date($comment->timestamp))),
-    'title'     => l($comment->subject, $_GET['q'], NULL, NULL, "comment-$comment->cid")
+	'author'    => theme('username', $comment),
+	'comment'   => $comment,
+	'content'   => $comment->comment,
+	'date'      => format_date($comment->timestamp),
+	'links'     => isset($links) ? theme('links', $links) : '',
+	'new'       => $comment->new ? t('new') : '',
+	'picture'   => theme_get_setting('toggle_comment_user_picture') ? theme('user_picture', $comment) : '',
+	'submitted' => t('Submitted by !a on @b.',
+					  array('!a' => theme('username', $comment),
+							'@b' => format_date($comment->timestamp))),
+	'title'     => l($comment->subject, $_GET['q'], NULL, NULL, "comment-$comment->cid")
   ));
 }
 
@@ -337,9 +337,9 @@ function phptemplate_block($block) {
  */
 function phptemplate_box($title, $content, $region = 'main') {
   return _phptemplate_callback('box', array(
-    'content' =>   $content,
-    'region'  =>   $region,
-    'title'   =>   $title
+	'content' =>   $content,
+	'region'  =>   $region,
+	'title'   =>   $title
   ));
 }
 
@@ -364,30 +364,30 @@ function _phptemplate_default($hook, $variables, $suggestions = array(), $extens
   // Loop through any suggestions in FIFO order.
   $suggestions = array_reverse($suggestions);
   foreach ($suggestions as $suggestion) {
-    if (!empty($suggestion) && file_exists(path_to_theme() .'/'. $suggestion . $extension)) {
-      $file = path_to_theme() .'/'. $suggestion . $extension;
-      break;
-    }
+	if (!empty($suggestion) && file_exists(path_to_theme() .'/'. $suggestion . $extension)) {
+	  $file = path_to_theme() .'/'. $suggestion . $extension;
+	  break;
+	}
   }
 
   if (!isset($file)) {
-    if (file_exists(path_to_theme() ."/$hook$extension")) {
-      $file = path_to_theme() ."/$hook$extension";
-    }
-    else {
-      if (in_array($hook, array('node', 'block', 'box', 'comment'))) {
-        $file = path_to_engine() .'/'. $hook . $extension;
-      }
-      else {
-        $variables['hook'] = $hook;
-        watchdog('error', t('%engine.engine was instructed to override the %name theme function, but no valid template file was found.', array('%engine' => $theme_engine, '%name' => $hook)));
-        $file = path_to_engine() .'/default'. $extension;
-      }
-    }
+	if (file_exists(path_to_theme() ."/$hook$extension")) {
+	  $file = path_to_theme() ."/$hook$extension";
+	}
+	else {
+	  if (in_array($hook, array('node', 'block', 'box', 'comment'))) {
+		$file = path_to_engine() .'/'. $hook . $extension;
+	  }
+	  else {
+		$variables['hook'] = $hook;
+		watchdog('error', t('%engine.engine was instructed to override the %name theme function, but no valid template file was found.', array('%engine' => $theme_engine, '%name' => $hook)));
+		$file = path_to_engine() .'/default'. $extension;
+	  }
+	}
   }
 
   if (isset($file)) {
-    return call_user_func('_'. $theme_engine .'_render', $file, $variables);
+	return call_user_func('_'. $theme_engine .'_render', $file, $variables);
   }
 }
 

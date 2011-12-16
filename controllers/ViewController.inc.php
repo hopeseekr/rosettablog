@@ -58,15 +58,9 @@ class ViewController
         // filter, or use the default value 'home'."
 		if (!isset($_GET['view']))
 		{
-			if ($_SERVER['SCRIPT_URL'] == '/')
-			{
-				$this->view = 'home';
-				$this->action = 'index';
-			}
-			else
-			{
-				$this->display404();
-			}
+			// FIXME: This logic (or lack thereof) **really** needs some work.
+			$this->view = 'home';
+			$this->action = 'index';
 		}
 		else
 		{
@@ -166,7 +160,8 @@ class ViewController
                 $this->reformatArticleProperties($summary);
             }
 
-            $this->viewData = array('summaries' => $summaries);
+            $this->viewData = array('config'    => $config,
+			                        'summaries' => $summaries);
         }
         else if ($this->view == 'article' and $this->action == 'index')
         {
@@ -184,7 +179,8 @@ class ViewController
 				$this->reformatArticleProperties($article);
 
 				//$this->viewData = array('article' => $article);
-				$this->viewData = array('page_title'    => $article->title . ' | ' . $_SERVER['HTTP_HOST'],
+				$this->viewData = array('config'        => $config,
+				                        'page_title'    => $article->title . ' | ' . $config['blog_name'],
 				                        'article_id'    => $article->id,
 				                        'article_title' => $article->title,
 				                        'main_content'  => $article->body,
@@ -204,8 +200,8 @@ class ViewController
 	 */
 	private function reformatArticleProperties(&$article)
 	{
-        $article->creationDate = date('Y-m-d h:i:s', $article->creationDate);
-        $article->lastModified = date('Y-m-d h:i:s', $article->lastModified);
+        $article->creationDate = date('Y-m-d H:i:s', $article->creationDate);
+        $article->lastModified = date('Y-m-d H:i:s', $article->lastModified);
 
 		if ($article->format == self::ARTICLE_FORMAT_FILTERED)
 		{

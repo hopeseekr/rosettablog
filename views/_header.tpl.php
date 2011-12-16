@@ -14,23 +14,17 @@
 *
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
+
+$baseURL = url_a('baseURL');
 ?>
-<?php require '_header.tpl.php'; ?>
-		<ol>
-<?php
-	foreach ($summaries as $summary)
-	{
-?>
-			<li class="article_box">
-				<h2><a href="<?php echo url_a("index.php?view=article&id={$summary->id}"); ?>"><?php echo $summary->title; ?></a></h2>
-				<ul>
-					<li>Created: <?php echo $summary->creationDate; ?></li>
-					<li>Last modified: <?php echo $summary->lastModified; ?></li>
-				</ul>
-				<p class="artible_body"><?php echo $summary->teaser; ?></p>
-			</li>
-<?php
-	}	
-?>
-		</ol>
-<?php require '_footer.tpl.php'; ?>
+<html>
+	<head>
+        <base href="<?php echo $baseURL; ?>"/>
+		<title><?php echo $page_title; ?></title>
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
+		<link type="text/css" rel="stylesheet" href="css/main.css"/>
+	</head>
+	<body>
+		<h1><?php echo $config['blog_name']; ?></h1>
+		<h4 id="mission">A needle of <em>Hope</em> amid a monstrous haystack of <em>Chaos</em>.</h4>
+        <div class="breadcrumbs"><a href="">Home</a></div>

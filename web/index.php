@@ -34,14 +34,16 @@
    it is performing.  Let's call our default view "home" and our default action "index".
 */
 // 1. Initialize the web application.
-// 1a. Change the active path to the root directory of the project.
-chdir('..');
+// 1a. Set up the app path constant.
+// realpath() will take any UNIX-style path, even relative ones, like ".." and
+// return (if the file/directory exists) the auctual OS-styled path name.
+define('ROSETTA_APP_PATH', realpath(dirname(__FILE__) . '/../'));
 
 // 1b. Load the database abstraction library.
-require './lib/MyDB.inc.php';
+require ROSETTA_APP_PATH . '/lib/MyDB.inc.php';
 
 // 1c. Load helper functions.
-require './lib/misc.inc.php';
+require ROSETTA_APP_PATH . '/lib/misc.inc.php';
 /*
 $config = new MyDBConfigStruct;
 $config->hostname = 'localhost';
@@ -53,8 +55,8 @@ unset($config);
 */
 
 // 2. Start up the SimpleConfig library.
-require './lib/SimpleConfig.php';
-SimpleConfig::setConfig('./config.php');
+require ROSETTA_APP_PATH . '/lib/SimpleConfig.php';
+SimpleConfig::setConfig(ROSETTA_APP_PATH . '/config.php');
 
 // 3. Setup the __autoload magic function to handle loading all of our
 //    required files.
@@ -62,37 +64,37 @@ function __autoload($name)
 {
 	if (strpos($name, 'Controller') !== false)
 	{
-		require './controllers/' . $name . '.inc.php';
+		require ROSETTA_APP_PATH . '/controllers/' . $name . '.inc.php';
 	}
 	else if (strpos($name, 'Manager') !== false)
 	{
-		require './managers/' . $name . '.inc.php';
+		require ROSETTA_APP_PATH . '/managers/' . $name . '.inc.php';
 	}
-    else if (($index = strpos($name, 'ThemeEngine')) !== false)
-    {
+	else if (($index = strpos($name, 'ThemeEngine')) !== false)
+	{
 		$platform = substr($name, 0, $index);
-		require './platforms/' . $platform . '/' . $name . '.inc.php';
-    }
+		require ROSETTA_APP_PATH . '/platforms/' . $platform . '/' . $name . '.inc.php';
+	}
 	else if (($index = strpos($name, 'ArticleEngine')) !== false)
-    {
-		if (file_exists('./platforms/' . $name . '.inc.php'))
+	{
+		if (file_exists(ROSETTA_APP_PATH . '/platforms/' . $name . '.inc.php'))
 		{
-			require './platforms/' . $name . '.inc.php';
+			require ROSETTA_APP_PATH . '/platforms/' . $name . '.inc.php';
 		}
 		else
 		{
 			$platform = substr($name, 0, $index);
-			require './platforms/' . $platform . '/' . $name . '.inc.php';
+			require ROSETTA_APP_PATH . '/platforms/' . $platform . '/' . $name . '.inc.php';
 		}
-    }
-    else if (file_exists('misc/' . $name . '.inc.php'))
-    {
-        require 'misc/' . $name . '.inc.php';
-    }
+	}
+	else if (file_exists(ROSETTA_APP_PATH . '/misc/' . $name . '.inc.php'))
+	{
+		require ROSETTA_APP_PATH . '/misc/' . $name . '.inc.php';
+	}
 	else
 	{
 		// Let's see if it's a model.
-		$filename = './models/' . $name . '.inc.php';
+		$filename = ROSETTA_APP_PATH . '/models/' . $name . '.inc.php';
 		if (file_exists($filename))
 		{
 			require $filename;

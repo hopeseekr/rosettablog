@@ -100,7 +100,15 @@ class MyDB
 		// Let's see if we're storing the pass in the server.conf...
 		if (is_null($config))
 		{
-			if (isset($_SERVER['SQL_USER']))
+			if (isset($_SERVER['REDIRECT_SQL_USER']))
+			{
+				$config = new MyDBConfigStruct;
+				$config->hostname = isset($_SERVER['REDIRECT_SQL_HOST']) ? $_SERVER['REDIRECT_SQL_HOST'] : 'localhost';
+				$config->username = $_SERVER['REDIRECT_SQL_USER'];
+				$config->password = $_SERVER['REDIRECT_SQL_PASS'];
+				$config->database = $_SERVER['REDIRECT_SQL_DB'];
+			}
+			elseif (isset($_SERVER['SQL_USER']))
 			{
 				$config = new MyDBConfigStruct;
 				$config->hostname = isset($_SERVER['SQL_HOST']) ? $_SERVER['SQL_HOST'] : 'localhost';

@@ -14,20 +14,8 @@
 *
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
-
-$rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/') + 1);
 ?>
-<html>
-	<head>
-        <base href="<?php echo $rootDir; ?>"/>
-		<title><?php echo $page_title; ?></title>
-		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
-		<link type="text/css" rel="stylesheet" href="/css/main.css"/>
-	</head>
-	<body>
-		<h1>Incendiary.ws</h1>
-		<h4 id="mission">A needle of <em>Hope</em> amid a monstrous haystack of <em>Chaotic Order</em>.</h4>
-        <div class="breadcrumbs"><a href="">Home</a></div>
+<?php require '_header.tpl.php'; ?>
 		<div class="article_box">
 			<h2><a href="<?php echo url_a("index.php?view=article&id={$article_id}"); ?>"><?php echo $article_title; ?></a></h2>
 			<ul>
@@ -36,5 +24,4 @@ $rootDir = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '
 			</ul>
 			<p class="article_body"><?php echo $main_content; ?></p>
 		</div>
-	</body>
-</html>
+<?php require '_footer.tpl.php'; ?>

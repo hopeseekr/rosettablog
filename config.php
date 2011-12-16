@@ -1,4 +1,5 @@
 <?php
+$config['blog_name'] = 'A needle of Hope amid a haystack of Chaos | incendiary.ws';
 $config['blog_platform'] = 'Drupal5';
 $config['url_style'] = 'Drupal';
 $config['pretty_urls'] = true;
