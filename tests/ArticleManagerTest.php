@@ -44,7 +44,7 @@ class SimpleArticleEngineStub implements ArticleEngine
 		throw new ArticleManagerException("Article not found", ArticleManagerException::ARTICLE_NOT_FOUND);
 	}
 
-	public function fetchArticleSummaries($articleLimit, $offset = 0)
+	public function fetchArticleSummaries($articleLimit = 10000000, $offset = 0)
 	{
 		$articles = null;
 
