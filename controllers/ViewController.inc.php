@@ -161,7 +161,8 @@ class ViewController
             }
 
             $this->viewData = array('config'    => $config,
-			                        'summaries' => $summaries);
+                                    'page_title' => strip_tags($config['mission']) . ' | ' . $config['blog_name'],
+                                    'summaries' => $summaries);
         }
         else if ($this->view == 'article' and $this->action == 'index')
         {
