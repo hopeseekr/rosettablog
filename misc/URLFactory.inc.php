@@ -52,28 +52,34 @@ interface URLSchemeI
 // FIXME?? This may be much better as a Strategy Pattern.
 class CommonURLScheme implements URLSchemeI
 {
+	protected $baseURL;
+
+	public function getBaseURL()
+	{
+		if ($this->baseURL !== null) { return $this->baseURL; }
+
+		$protocol = !isset($_SERVER['HTTPS']) ? 'http' : 'https';
+		$domain = $_SERVER['HTTP_HOST'];
+		if (substr_count($_SERVER['SCRIPT_NAME'], '/') === 1)
+		{
+			$baseURL = sprintf("%s://%s/", $protocol, $domain);
+		}
+		else
+		{
+			$basePath = substr($_SERVER['SCRIPT_NAME'], 1, strrpos($_SERVER['SCRIPT_NAME'], '/') - 1);
+			$baseURL = sprintf("%s://%s/%s/", $protocol, $domain, $basePath);
+		}
+
+		$this->baseURL = $baseURL;
+
+		return $baseURL;
+	}
 
 	public function makePrettyURL($params)
 	{
-		static $baseURL;
 		if ($params == 'baseURL')
 		{
-			if ($baseURL !== null) { return $baseURL; }
-
-			$protocol = !isset($_SERVER['HTTPS']) ? 'http' : 'https';
-			$domain = $_SERVER['HTTP_HOST'];
-			if (substr_count($_SERVER['SCRIPT_NAME'], '/') === 1)
-			{
-				$baseURL = sprintf("%s://%s/", $protocol, $domain);
-			}
-			else
-			{
-				$basePath = substr($_SERVER['SCRIPT_NAME'], 1, strrpos($_SERVER['SCRIPT_NAME'], '/') - 1);
-				$baseURL = sprintf("%s://%s/%s/", $protocol, $domain, $basePath);
-			}
-
-
-			return $baseURL;
+			return $this->getBaseURL();
 		}
 	}
 }
@@ -82,11 +88,9 @@ class RosettaURLScheme extends CommonURLScheme implements URLSchemeI
 {
     public function makePrettyURL($params)
     {
-		$url = parent::makePrettyURL($params);
-
         if (isset($params['view']) && $params['view'] == 'article')
         {
-            $url = 'article/' . $params['id'];
+            $url = $this->getBaseURL() . 'article/' . $params['id'];
             unset($params['view']); unset($params['id']);
 
             if (!empty($params))
@@ -105,9 +109,10 @@ class DrupalURLScheme extends CommonURLScheme implements URLSchemeI
     public function makePrettyURL($params)
     {
 		$url = parent::makePrettyURL($params);
+
         if (isset($params['view']) && $params['view'] == 'article')
         {
-            $url = 'node/' . $params['id'];
+            $url = $this->getBaseURL() . 'node/' . $params['id'];
             unset($params['view']); unset($params['id']);
 
             if (!empty($params))
