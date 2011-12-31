@@ -14,10 +14,14 @@
 *
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
+$articleURL = url_a("index.php?view=article&id={$article_id}");
+$canonicalURL = isset($canonicalURL)
+                ? $canonicalURL
+                : $articleURL;
 ?>
 <?php require '_header.tpl.php'; ?>
 		<div class="article_box">
-			<h2><a href="<?php echo url_a("index.php?view=article&id={$article_id}"); ?>"><?php echo $article_title; ?></a></h2>
+			<h2><a href="<?php echo $articleURL; ?>"><?php echo $article_title; ?></a></h2>
 			<ul>
 				<li>Created: <?php echo $creation_date; ?></li>
 				<li>Last modified: <?php echo $last_modified; ?></li>

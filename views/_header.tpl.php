@@ -23,6 +23,11 @@ $baseURL = url_a('baseURL');
 		<title><?php echo $page_title; ?></title>
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'/>
 		<link type="text/css" rel="stylesheet" href="css/main.css"/>
+<?php
+	if (!empty($canonicalURL)) {
+?>
+		<link rel="canonical" href="<?php echo $canonicalURL; ?>"/>
+<?php } ?>
 	</head>
 	<body>
 		<h1><?php echo $config['blog_name']; ?></h1>
