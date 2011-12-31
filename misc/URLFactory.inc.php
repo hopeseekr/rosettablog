@@ -25,7 +25,8 @@ class URLFactory
         
         if (isset($config['url_style']))
         {
-            $className = $config['url_style'] . 'URL';
+            $className = $config['url_style'] . 'URLScheme';
+
             if (class_exists($className))
             {
                 return new $className;
@@ -104,7 +105,6 @@ class DrupalURLScheme extends CommonURLScheme implements URLSchemeI
     public function makePrettyURL($params)
     {
 		$url = parent::makePrettyURL($params);
-
         if (isset($params['view']) && $params['view'] == 'article')
         {
             $url = 'node/' . $params['id'];
