@@ -92,7 +92,7 @@ class ArticleManagerTest extends PHPUnit_Framework_TestCase
 		try
 		{
 			$article = $this->object->fetchArticleByName('existing article');
-			$this->assertType('Article', $article, 'Did not return an article of type Article');
+			$this->assertInstanceOf('Article', $article, 'Did not return an article of type Article');
 			$this->assertAttributeEquals(1, 'id', $article, 'Did not return the expected article');
 		}
 		catch(ArticleManagerException $e)
@@ -119,7 +119,7 @@ class ArticleManagerTest extends PHPUnit_Framework_TestCase
 		try
 		{
 			$article = $this->object->fetchArticleByID(1);
-			$this->assertType('Article', $article, 'Did not return an article of type Article');
+			$this->assertInstanceOf('Article', $article, 'Did not return an article of type Article');
 			$this->assertAttributeEquals(1, 'id', $article, 'Did not return the expected article');
 		}
 		catch(ArticleManagerException $e)
