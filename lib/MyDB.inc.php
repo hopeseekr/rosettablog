@@ -286,6 +286,7 @@ c	 */
 			error_log(sprintf('SQL error: (%s) - %s',
 			                  $errorInfo[1],
 			                  $errorInfo[2]));
+			error_log("Bugged SQL: " . debugPreparedSQL($sql, $params));
 			throw new MyDBException('Caught an SQL error...see error log for more details.', MyDBException::BAD_SQL);
 		}
 		
@@ -373,3 +374,37 @@ function queryDB($sql, array $params = null)
 	
 	return $myDB->query($sql, $params);
 }
+
+/**
+ * Replaces any parameter placeholders in a query with the value of that
+ * parameter. Useful for debugging. Assumes anonymous parameters from 
+ * $params are are in the same order as specified in $query
+ *
+ * @param string $query The sql query with parameter placeholders
+ * @param array $params The array of substitution parameters
+ * @return string The interpolated query
+ */
+function debugPreparedSQL($query, $params)
+{
+	$keys = array();
+
+	if (empty($params)) { return $query; }
+
+	# build a regular expression for each parameter
+	foreach ($params as $key => $value)
+	{
+		if (is_string($key))
+		{
+			$keys[] = '/:'.$key.'/';
+		}
+		else
+		{
+			$keys[] = '/[?]/';
+		}
+	}
+
+	$query = preg_replace($keys, $params, $query, 1, $count);
+
+	return $query;
+}
+
