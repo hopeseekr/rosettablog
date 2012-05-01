@@ -34,7 +34,7 @@ class Drupal5ArticleEngine implements ArticleEngine
 		$DB = MyDB::loadDB();
 
 		// 1c. Attempt to fetch the article from the database.
-		$DB->query('SELECT nid AS id, title, created AS creationDate, changed AS lastModified, body, format FROM node WHERE nid=?', array($articleID));
+		$DB->query('SELECT nid AS id, title, created AS creationDate, changed AS lastModified, body, format FROM node WHERE nid=? AND status != 0', array($articleID));
 		$article = $DB->fetchObject('Article');
 
 		if ($article === false)
