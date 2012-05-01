@@ -27,7 +27,10 @@ $baseURL = url_a('baseURL');
 	if (!empty($canonicalURL)) {
 ?>
 		<link rel="canonical" href="<?php echo $canonicalURL; ?>"/>
-<?php } ?>
+<?php
+	}
+	include 'custom/html_head.tpl.php';
+?>
 	</head>
 	<body>
 		<h1><?php echo $config['blog_name']; ?></h1>
