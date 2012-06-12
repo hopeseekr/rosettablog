@@ -22,10 +22,12 @@ $canonicalURL = isset($canonicalURL)
 <?php require '_header.tpl.php'; ?>
 		<div class="article_box">
 			<h2><a href="<?php echo $articleURL; ?>"><?php echo $article_title; ?></a></h2>
-			<ul>
-				<li>Created: <?php echo $creation_date; ?></li>
-				<li>Last modified: <?php echo $last_modified; ?></li>
-			</ul>
+			<table class="date_box">
+				<tr>
+					<td>Created: <?php echo $creation_date; ?></td>
+					<td>Last modified: <?php echo $last_modified; ?></td>
+				</tr>
+			</table>
 			<div class="article_body"><?php echo $main_content; ?></div>
 		</div>
 <?php require '_footer.tpl.php'; ?>

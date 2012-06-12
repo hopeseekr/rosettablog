@@ -16,8 +16,11 @@
 **/
 
 $baseURL = url_a('baseURL');
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
         <base href="<?php echo $baseURL; ?>"/>
 		<title><?php echo $page_title; ?></title>
@@ -33,10 +36,13 @@ $baseURL = url_a('baseURL');
 ?>
 	</head>
 	<body>
-		<h1><?php echo $config['blog_name']; ?></h1>
+		<div id="header">
+			<h1 id="site_title"><span><?php echo $config['blog_name']; ?></span></h1>
 <?php
 	if (!empty($config['mission'])) {
 ?>
-		<h4 id="mission"><?php echo $config['mission']; ?></h4>
+			<h4 id="mission"><span><?php echo $config['mission']; ?></span></h4>
+
 <?php } ?>
-        <div class="breadcrumbs"><a href="">Home</a></div>
+		</div>
+

@@ -1,14 +1,21 @@
 .article_box { border: 1px solid #aaa; width: 40em; padding: 15px 30px 15px 30px; margin: 10px 0 10px 0; }
 blockquote { border: 1px dotted grey; padding: 5px 1em 5px 1em; background: #CCCCDD; }
 body { 
-	background-color: #e4f2ff;
-	background-image: url("../images/bacgroundGraphic.png");
+
+	background: url(http://drupal6.wisdomproject.cc/sites/all/themes/rt_quantive_d6/images/backgrounds/style2/high/bg-top.jpg) #2d102c center no-repeat;
 	background-attachment: fixed;
-	background-position: 75% 35%;
+	background-position: -350px -80px;
 	background-repeat: no-repeat;
 	font-family: "Tahoma";
-	}
-	
+	margin-left: 20px;
+}
+
+body > ol { 
+	list-style-position: inside;
+	font-size: 20px !important;
+	margin-left: 20px;
+}
+
 /* teaser box */
 .article_box {
 	margin-top: 10px;
@@ -22,11 +29,57 @@ body {
 	width: 50em;
 	background-color: #fff;
 	border: none;
+/*
 	corner-radius: 10px;
-	-moz-corner-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+*/
 	font-family: "Tahoma";
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 20px;
 	color: #000;
-	}
+}
+
+div#header {
+}
+
+h1#site_title { font-style: italic; }
+
+h1#site_title, #mission, div.breadcrumbs { 
+	background-color: rgba(185, 226, 243, 0.4);
+	background-color: rgba(0, 0, 10, 0.4);
+	background-color: rgba(153, 0, 123, 0.4);
+	background-color: rgba(56, 0, 123, 0.4);
+	
+	padding-left: 8px;
+color: white;
+	line-height: 1.5em;
+}
+
+.article_box > h2 {
+	font-size: 20px;
+}
+
+.article_box > h2 > a { color: black; text-decoration: none; }
+
+.article_box table.date_box {
+	border: 1px darkgrey solid;
+	/*margin-left: 20px;*/
+	border-collapse: collapse;
+	margin-top: 15px;
+}
+
+.article_box table.date_box td {
+	border: 1px darkgrey solid;
+
+	padding: 2px 10px 2px 10px;
+}
+
+h1#site_title { 
+	width: 10em;
+}
+
+#mission { 
+	width: 24em;
+}
 

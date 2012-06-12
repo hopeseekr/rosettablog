@@ -23,11 +23,21 @@
 ?>
 			<li class="article_box">
 				<h2><a href="<?php echo url_a("index.php?view=article&id={$summary->id}"); ?>"><?php echo $summary->title; ?></a></h2>
-				<ul>
-					<li>Created: <?php echo $summary->creationDate; ?></li>
-					<li>Last modified: <?php echo $summary->lastModified; ?></li>
-				</ul>
-				<p class="artible_body"><?php echo $summary->teaser; ?></p>
+				<div class="article_body"><?php echo $summary->teaser; ?></div>
+				<table class="date_box">
+					<tr>
+						<td><?php echo $summary->creationDate; ?></td>
+<?php
+		if ($summary->lastModified != $summary->creationDate)
+		{
+?>
+						<td>Last modified: <?php echo $summary->lastModified; ?></td>
+<?php
+		}
+?>
+
+					</tr>
+				</table>
 			</li>
 <?php
 	}	
