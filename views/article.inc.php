@@ -26,6 +26,6 @@ $canonicalURL = isset($canonicalURL)
 				<li>Created: <?php echo $creation_date; ?></li>
 				<li>Last modified: <?php echo $last_modified; ?></li>
 			</ul>
-			<p class="article_body"><?php echo $main_content; ?></p>
+			<div class="article_body"><?php echo $main_content; ?></div>
 		</div>
 <?php require '_footer.tpl.php'; ?>

@@ -15,5 +15,6 @@
 * BSD License: http://www.opensource.org/licenses/bsd-license.php
 **/
 ?>
+		<script type="text/javascript" src="/js/external.js"></script>
 	</body>
 </html>

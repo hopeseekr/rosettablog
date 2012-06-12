@@ -29,7 +29,8 @@ if (!function_exists('path_to_theme'))
 {
 	function path_to_theme()
 	{
-		// FIXME: Is there a better way?
+		// FIXME: Is there a better way? Drupal themes are literally litered with calls to this function ;o
+		// -Ted 2011-02-05
 		return $GLOBALS['themePath'];
 	}
 }
