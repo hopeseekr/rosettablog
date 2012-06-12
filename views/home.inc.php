@@ -18,10 +18,11 @@
 <?php require '_header.tpl.php'; ?>
 		<ol>
 <?php
+	$articleNum = count($summaries);
 	foreach ($summaries as $summary)
 	{
 ?>
-			<li class="article_box">
+			<li class="article_box" value="<?php echo $articleNum; ?>">
 				<h2><a href="<?php echo url_a("index.php?view=article&id={$summary->id}"); ?>"><?php echo $summary->title; ?></a></h2>
 				<div class="article_body"><?php echo $summary->teaser; ?></div>
 				<table class="date_box">
@@ -40,7 +41,8 @@
 				</table>
 			</li>
 <?php
-	}	
+		--$articleNum;
+	}
 ?>
 		</ol>
 <?php require '_footer.tpl.php'; ?>
