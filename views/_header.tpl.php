@@ -37,11 +37,14 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 	</head>
 	<body>
 		<div id="header">
-			<h1 id="site_title"><span><?php echo $config['blog_name']; ?></span></h1>
+			<h1 id="site_title"><?php echo $config['blog_name']; ?></h1>
+</div>
 <?php
 	if (!empty($config['mission'])) {
+		// FIXME: Need to make mission statement dynamic again.
+		// <h2 class="head" id="mission">< echo $config['mission']; </h2>
 ?>
-			<h4 id="mission"><span><?php echo $config['mission']; ?></span></h4>
+			<h2 class="head" id="mission">A needle of <span class="h2em">Hope</span><br />amid a haystack of <span class="h2em">Chaos</span>.</h2>
 
 <?php } ?>
 		</div>
