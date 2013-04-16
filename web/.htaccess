@@ -1,6 +1,8 @@
 RewriteEngine on
 #RewriteBase /rosettablog/web/
 
+
+#RewriteRule ^files/(.+) http://www.incendiary.ws/?path=../../files/$1 [R,L,QSA]
 # Pretty URLs
 ## Rosetta
 RewriteRule ^article/([^/]+) index.php?view=article&id=$1 [L,QSA]
