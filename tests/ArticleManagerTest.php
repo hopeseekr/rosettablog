@@ -33,37 +33,7 @@ class SimpleArticleEngineStub implements ArticleEngine
 
 		throw new ArticleManagerException("Article not found", ArticleManagerException::ARTICLE_NOT_FOUND);
 	}
-
-	public function fetchArticleByName2($articleName)
-	{
-		if ($articleName == 'existing article')
-		{
-			return $this->article;
-		}
-
-		throw new ArticleManagerException("Article not found", ArticleManagerException::ARTICLE_NOT_FOUND);
-	}
-
-	public function fetchArticleByName2($articleName)
-	{
-		if ($articleName == 'existing article')
-		{
-			return $this->article;
-		}
-
-		throw new ArticleManagerException("Article not found", ArticleManagerException::ARTICLE_NOT_FOUND);
-	}
-
-	public function fetchArticleByName3($articleName)
-	{
-		if ($articleName == 'existing article')
-		{
-			return $this->article;
-		}
-
-		throw new ArticleManagerException("Article not found", ArticleManagerException::ARTICLE_NOT_FOUND);
-	}
-
+	
 	public function fetchArticleByID($articleID)
 	{
 		if ($articleID == 1)
@@ -173,6 +143,7 @@ class ArticleManagerTest extends PHPUnit_Framework_TestCase
 
 	public function testWillFetchXArticleSummaries()
 	{
+		// This is just some code to test the reversion.
 		$summaries = $this->object->fetchArticleSummaries(5);
 		$this->assertEquals(count($summaries), 5, 'Did not return 5 summaries');
 		$this->assertEquals($summaries[0]->id, 1, 'Returned the wrong first summary');
