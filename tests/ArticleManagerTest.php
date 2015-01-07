@@ -33,7 +33,17 @@ class SimpleArticleEngineStub implements ArticleEngine
 
 		throw new ArticleManagerException("Article not found", ArticleManagerException::ARTICLE_NOT_FOUND);
 	}
-	
+
+	public function fetchArticleByName2($articleName)
+	{
+		if ($articleName == 'existing article')
+		{
+			return $this->article;
+		}
+
+		throw new ArticleManagerException("Article not found", ArticleManagerException::ARTICLE_NOT_FOUND);
+	}
+
 	public function fetchArticleByID($articleID)
 	{
 		if ($articleID == 1)
