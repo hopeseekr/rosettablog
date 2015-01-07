@@ -161,6 +161,12 @@ class ArticleManagerTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($summaries[0]->teaser, 'This is a teaser for article #1', 'Returned the wrong teaser');
 	}
 
+	public function testWillFetchArticleTeasersForSummaries2()
+	{
+		$summaries = $this->object->fetchArticleSummaries(1);
+		$this->assertEquals($summaries[0]->teaser, 'This is a teaser for article #1', 'Returned the wrong teaser');
+	}
+
 	public function testWontFetchArticleBodiesForSummaries()
 	{
 		$summaries = $this->object->fetchArticleSummaries(1);
